@@ -53,7 +53,7 @@ int lg_has_edge(list_graph_t* graph, int src, int dest) {
 	linked_list_t *list = graph->neighbors[src];
 	ll_node_t *nod = list->head;
 
-	for (int i = 0; i < list->size; i++) {
+	for (unsigned int i = 0; i < list->size; i++) {
 		if (*(int *)nod->data == dest)
 			return 1;
 		nod = nod->next;
@@ -73,7 +73,7 @@ void lg_remove_edge(list_graph_t* graph, int src, int dest) {
 
 	linked_list_t *list = graph->neighbors[src];
 	ll_node_t *nod = list->head;
-	for (int i = 0; i < list->size; i++) {
+	for (unsigned int i = 0; i < list->size; i++) {
 		if (*(int *)nod->data == dest) {
 			ll_node_t *to_remove = ll_remove_nth_node(list, i);
 			free(to_remove->data);
@@ -86,7 +86,7 @@ void lg_remove_edge(list_graph_t* graph, int src, int dest) {
 
 	list = graph->neighbors[dest];
 	nod = list->head;
-	for (int i = 0; i < list->size; i++) {
+	for (unsigned int i = 0; i < list->size; i++) {
 		if (*(int *)nod->data == src) {
 			ll_node_t *to_remove = ll_remove_nth_node(list, i);
 			free(to_remove->data);
