@@ -9,7 +9,6 @@
 /// lista simplu inlantuita, lista dublu inlantuita circulara
 #include "utils.h"
 
-
 ///
 ///
 /// Simple linked list
@@ -17,23 +16,23 @@
 ///
 typedef struct ll_node_t
 {
-	void* data;
-	struct ll_node_t* next;
+	void *data;
+	struct ll_node_t *next;
 } ll_node_t;
 
 typedef struct linked_list_t
 {
-	ll_node_t* head;
+	ll_node_t *head;
 	unsigned int data_size;
 	unsigned int size;
 } linked_list_t;
 
 linked_list_t *ll_create(unsigned int data_size);
-void ll_add_nth_node(linked_list_t* list, unsigned int n, const void* new_data);
-ll_node_t *ll_remove_nth_node(linked_list_t* list, unsigned int n);
-unsigned int ll_get_size(linked_list_t* list);
-void ll_print_int(linked_list_t* list);
-void ll_free(linked_list_t** pp_list);
+void ll_add_nth_node(linked_list_t *list, unsigned int n, const void *new_data);
+ll_node_t *ll_remove_nth_node(linked_list_t *list, unsigned int n);
+unsigned int ll_get_size(linked_list_t *list);
+void ll_print_int(linked_list_t *list);
+void ll_free(linked_list_t **pp_list);
 
 ///
 ///
@@ -54,8 +53,8 @@ struct dll_list {
 };
 
 void dll_free(dll_list **pp_list, void (*elem_free)(void *));
-void dll_print_string_list(dll_list* list);
-void dll_print_int_list(dll_list* list);
+void dll_print_string_list(dll_list *list);
+void dll_print_int_list(dll_list *list);
 void dll_add_nth_node(dll_list *list, int n, void *new_data);
 void remove_a_node(dll_node *node_to_remove, dll_list *list);
 dll_node *dll_remove_nth_node_from_end(dll_list *list);
@@ -107,11 +106,10 @@ void clear_stack(stack_t *stack);
 void purge_stack(stack_t **stack);
 void push_stack(stack_t *stack, void *new_data);
 void pop_stack(stack_t *stack);
-void* peek_stack(stack_t *stack);
+void *peek_stack(stack_t *stack);
 int is_empty_stack(stack_t *stack);
 int get_size_stack(stack_t *stack);
 stack_t *init_stack(unsigned int data_size);
-
 
 ///
 ///
@@ -121,18 +119,17 @@ stack_t *init_stack(unsigned int data_size);
 /** @param neighbors: Vector de pointeri spre listele de vecini
  *  @param nodes: Nr de noduri din graf
  */
-typedef struct
-{
-	int nodes; 
+typedef struct {
+	int nodes;
 	linked_list_t **neighbors;
 } list_graph_t;
 
 void purge_graph(list_graph_t **graph);
-void lg_print_graph(list_graph_t* graph);
-void lg_free(list_graph_t* graph);
-void lg_remove_edge(list_graph_t* graph, int src, int dest);
-int lg_has_edge(list_graph_t* graph, int src, int dest);
-void lg_add_edge(list_graph_t* graph, int src, int dest);
+void lg_print_graph(list_graph_t *graph);
+void lg_free(list_graph_t *graph);
+void lg_remove_edge(list_graph_t *graph, int src, int dest);
+int lg_has_edge(list_graph_t *graph, int src, int dest);
+void lg_add_edge(list_graph_t *graph, int src, int dest);
 list_graph_t *lg_create(int nodes);
 
 #endif
