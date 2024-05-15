@@ -31,6 +31,7 @@ void handle_input_friends(list_graph_t *graph, char *input)
 		char *name1 = strtok(NULL, "\n ");
 		char *name2 = strtok(NULL, "\n ");
 		distance_friend(graph, name1, name2);
+
 	} else if (!strcmp(cmd, "common")) {
 		(void)cmd;
 		// TODO: Add function
@@ -38,6 +39,7 @@ void handle_input_friends(list_graph_t *graph, char *input)
 		char *name = strtok(NULL, "\n ");
 		int id = get_user_id(name);
 		printf("%s has %d friends\n", name, graph->neighbors[id]->size);
+
 	} else if (!strcmp(cmd, "popular")) {
 		char *name = strtok(NULL, "\n ");
 		most_popular(graph, name);
