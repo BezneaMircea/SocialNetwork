@@ -38,6 +38,9 @@ int main(void)
 	init_tasks();
 
 	char *input = (char *)malloc(MAX_COMMAND_LEN);
+	
+	list_graph_t *graph = lg_create(MAX_PEOPLE);
+
 	while (1) {
 		input = fgets(input, MAX_COMMAND_LEN, stdin);
 
@@ -46,7 +49,7 @@ int main(void)
 			break;
 
 		#ifdef TASK_1
-		handle_input_friends(input);
+		handle_input_friends(graph, input);
 		#endif
 
 		#ifdef TASK_2
