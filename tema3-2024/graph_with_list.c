@@ -5,7 +5,6 @@
 
 #include "structuri.h"
 
-
 /**
  * @brief Initializeaza graful cu numarul de noduri primit ca parametru si aloca
  *        memorie pentru lista de adiacenta a grafului.
@@ -31,7 +30,7 @@ list_graph_t *lg_create(int nodes) {
  *  @param dest: Nodul 2
  *  @brief Functia creeaza o muchie de la src la dest si de la dest la src
  */
-void lg_add_edge(list_graph_t* graph, int src, int dest) {
+void lg_add_edge(list_graph_t *graph, int src, int dest) {
 	if (!graph)
 		return;
 
@@ -46,7 +45,7 @@ void lg_add_edge(list_graph_t* graph, int src, int dest) {
  *  @param src: Nodul 1
  *  @param dest: Nodul 2
  */
-int lg_has_edge(list_graph_t* graph, int src, int dest) {
+int lg_has_edge(list_graph_t *graph, int src, int dest) {
 	if (!graph)
 		return -1;
 
@@ -67,7 +66,7 @@ int lg_has_edge(list_graph_t* graph, int src, int dest) {
  *  @param src: Nodul 1
  *  @param dest: Nodul 2
  */
-void lg_remove_edge(list_graph_t* graph, int src, int dest) {
+void lg_remove_edge(list_graph_t *graph, int src, int dest) {
 	if (!graph)
 		return;
 
@@ -82,7 +81,6 @@ void lg_remove_edge(list_graph_t* graph, int src, int dest) {
 		}
 		nod = nod->next;
 	}
-
 
 	list = graph->neighbors[dest];
 	nod = list->head;
@@ -100,7 +98,7 @@ void lg_remove_edge(list_graph_t* graph, int src, int dest) {
 /** @brief Elibereaza memoria folosita de lista de adiacenta a grafului
  *  @param graph: Graful
  */
-void lg_free(list_graph_t* graph) {
+void lg_free(list_graph_t *graph) {
 	if (!graph)
 		return;
 
@@ -113,7 +111,7 @@ void lg_free(list_graph_t* graph) {
 /** @brief Printeaza lista de adiacenta a grafului
  *  @param graph: Graful
  */
-void lg_print_graph(list_graph_t* graph) {
+void lg_print_graph(list_graph_t *graph) {
 	for (int i = 0; i < graph->nodes; i++) {
 		printf("%d: ", i);
 		ll_print_int(graph->neighbors[i]);
