@@ -123,6 +123,22 @@ unsigned int ll_get_size(linked_list_t* list)
 }
 
 /*
+ * Functia primeste ca parametru o lista si imi afiseaza continutul acesteia.
+*/
+void ll_print_int(linked_list_t* list) {
+	if (!list)
+		return;
+
+	ll_node_t* curr = list->head;
+
+	while (curr) {
+		printf("%d ", *(int*)curr->data);
+		curr = curr->next;
+	}
+	printf("\n");
+}
+
+/*
  * Procedura elibereaza memoria folosita de toate nodurile din lista, iar la
  * sfarsit, elibereaza memoria folosita de structura lista si actualizeaza la
  * NULL valoarea pointerului la care pointeaza argumentul (argumentul este un
