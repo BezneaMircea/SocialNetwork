@@ -9,7 +9,8 @@
 #include "utils.h"
 
 /**
- * @brief Functia creeaza o legatura intre doi utilizatori, 2 muchii intr-un graf neorientat
+ * @brief Functia creeaza o legatura intre doi utilizatori,
+ * 2 muchii intr-un graf neorientat
  * @param name1: Numele primului utilizator
  * @param name2: Numele celui de-al doilea utilizator
  */
@@ -24,7 +25,8 @@ void add_friend(list_graph_t *graph, char *name1, char *name2) {
 }
 
 /**
- * @brief Functia sterge o legatura intre doi utilizatori, 2 muchii intr-un graf neorientat
+ * @brief Functia sterge o legatura intre doi utilizatori,
+ * 2 muchii intr-un graf neorientat
  * @param name1: Numele primului utilizator
  * @param name2: Numele celui de-al doilea utilizator
  */
@@ -64,28 +66,30 @@ void distance_friend(list_graph_t *graph, char *name1, char *name2) {
 		ll_node_t *current_node = graph->neighbors[nodtop]->head;
 		while (current_node) {
 			int vecin = *(int *)current_node->data;
-            if (vizitat[vecin] == 0) {
-                vizitat[vecin] = 1;
-                dist[vecin] = dist[nodtop] + 1;
-                q_enqueue(queue, &vecin);
-            }
-            current_node = current_node->next;
+			if (vizitat[vecin] == 0) {
+				vizitat[vecin] = 1;
+				dist[vecin] = dist[nodtop] + 1;
+				q_enqueue(queue, &vecin);
+			}
+			current_node = current_node->next;
 		}
 	}
 
 	if (dist[id_name2] == -1)
 		printf("There is no way to get from %s - %s\n", name1, name2);
 	else
-		printf("The distance between %s - %s is %d\n", name1, name2, dist[id_name2]);
-	
+		printf("The distance between %s - %s is %d\n",
+			   name1, name2, dist[id_name2]);
+
 	free(vizitat);
 	free(dist);
 }
 
-/** @brief Functia afiseaza cel mai popular utilizator
-			dintre un utilizator si prietenii sai
- * 	@param graph: Graful
- * 	@param user: Numele utilizatorului
+/**
+ * @brief Functia afiseaza cel mai popular utilizator
+ * dintre un utilizator si prietenii sai
+ * @param graph: Graful
+ * @param user: Numele utilizatorului
  */
 void most_popular(list_graph_t *graph, char *user) {
 	int id = get_user_id(user);
