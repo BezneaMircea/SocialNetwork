@@ -11,12 +11,14 @@
  *
  * Please add any necessary parameters to the functions
 */
-void handle_input_friends(char *input);
+void handle_input_friends(list_graph_t *graph, char *input);
 
 void add_friend(list_graph_t *graph, char *name1, char *name2);
 
 void remove_friend(list_graph_t *graph, char *name1, char *name2);
 
 void distance_friend(list_graph_t *graph, char *name1, char *name2);
+
+void most_popular(list_graph_t *graph, char *user);
 
 #endif // FRIENDS_H

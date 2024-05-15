@@ -6,15 +6,13 @@
 #include "structuri.h"
 #include "users.h"
 
-void handle_input_friends(char *input)
+void handle_input_friends(list_graph_t *graph, char *input)
 {
 	char *commands = strdup(input);
 	char *cmd = strtok(commands, "\n ");
 
 	if (!cmd)
 		return;
-
-	list_graph_t *graph = lg_create(MAX_PEOPLE);
 
 	if (!strcmp(cmd, "add")) {
 		char *name1 = strtok(NULL, "\n ");
@@ -27,21 +25,21 @@ void handle_input_friends(char *input)
 		remove_friend(graph, name1, name2);
 
 	} else if (!strcmp(cmd, "suggestions")) {
+		(void)cmd;
+		// TODO: Add function
+	} else if (!strcmp(cmd, "distance")) {
 		char *name1 = strtok(NULL, "\n ");
 		char *name2 = strtok(NULL, "\n ");
 		distance_friend(graph, name1, name2);
-
-	} else if (!strcmp(cmd, "distance")) {
-		(void)cmd;
-		// TODO: Add function
 	} else if (!strcmp(cmd, "common")) {
 		(void)cmd;
 		// TODO: Add function
 	} else if (!strcmp(cmd, "friends")) {
-		(void)cmd;
-		// TODO: Add function
+		char *name = strtok(NULL, "\n ");
+		int id = get_user_id(name);
+		printf("%s has %d friends\n", name, graph->neighbors[id]->size);
 	} else if (!strcmp(cmd, "popular")) {
-		(void)cmd;
-		// TODO: Add function
+		char *name = strtok(NULL, "\n ");
+		most_popular(graph, name);
 	}
 }
