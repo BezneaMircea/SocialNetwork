@@ -49,18 +49,36 @@ void distance_friend(list_graph_t *graph, char *name1, char *name2) {
 	int id_name2 = get_user_id(name2);
 
 	int *vizitat = calloc(graph->nodes, sizeof(int));
-	int *dist = calloc(graph->nodes);
+	int *dist = calloc(graph->nodes, sizeof(int));
+
+	for (int i = 0; i < graph->nodes; i++)
+		dist[i] = -1;
 
 	queue_t *queue = q_create(sizeof(int), graph->nodes);
 	q_enqueue(queue, &id_name1);
 	vizitat[id_name1] = 1;
-
+	dist[id_name1] = 0;
 
 	while (!q_is_empty(queue)) {
-		//int current_node = *(int *)q_front(queue);
+		int nodtop = *(int *)q_front(queue);
 		q_dequeue(queue);
-
+		ll_node_t *current_node = graph->neighbors[nodtop]->head;
+		while (current_node) {
+			int vecin = *(int *)current_node->data;
+            if (vizitat[vecin] == 0) {
+                vizitat[vecin] = 1;
+                dist[vecin] = dist[nodtop] + 1;
+                q_enqueue(queue, &vecin);
+            }
+            current_node = current_node->next;
+		}
 	}
-	free(vizitat);
 
+	if (dist[id_name2] == -1)
+		printf("There is no way to get from %s - %s\n", name1, name2);
+	else
+		printf("The distance between %s - %s is %d\n", name1, name2, dist[id_name2]);
+	
+	free(vizitat);
+	free(dist);
 }
