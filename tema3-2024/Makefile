@@ -9,7 +9,7 @@ QUEUE=queue
 FRIENDS_FUNCT=friends_function
 STRUCTURI=structuri
 FRIENDSS=friendss
-
+#sunt un smecher
 
 .PHONY: build clean
 
