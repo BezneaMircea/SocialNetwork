@@ -98,7 +98,7 @@ void push_stack(stack_t *stack, void *new_data) {
  *  @param stack: stiva 
  */
 void clear_stack(stack_t *stack) {
-	for (int i = 0; i < stack->list->size; i++)
+	for (unsigned int i = 0; i < stack->list->size; i++)
 		pop_stack(stack);
 }
 
