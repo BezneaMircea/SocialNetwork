@@ -76,11 +76,13 @@ void distance_friend(list_graph_t *graph, char *name1, char *name2) {
 	}
 
 	if (dist[id_name2] == -1)
-		printf("There is no way to get from %s - %s\n", name1, name2);
+		printf("There is no way to get from %s to %s\n", name1, name2);
 	else
 		printf("The distance between %s - %s is %d\n",
 			   name1, name2, dist[id_name2]);
 
+	q_free(queue);
+	free(queue);
 	free(vizitat);
 	free(dist);
 }

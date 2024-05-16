@@ -44,4 +44,6 @@ void handle_input_friends(list_graph_t *graph, char *input)
 		char *name = strtok(NULL, "\n ");
 		most_popular(graph, name);
 	}
+
+	free(commands);
 }

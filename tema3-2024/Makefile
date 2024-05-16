@@ -22,10 +22,10 @@ build: friends
 # Any other object file that is needed for the other files
 # add it here, separated by space
 
-friends: $(USERS).o $(FRIENDS).o $(FRIENDS_F).o $(LL_LIST).o $(DLL_LIST).o $(QUEUE).o $(STACK).o $(GRAPH).o friends.o social_media_friends.o
+friends: $(USERS).o $(FRIENDS).o $(FRIENDS_F).o $(LL_LIST).o $(DLL_LIST).o $(QUEUE).o $(STACK).o $(GRAPH).o friends.o social_media.o
 	$(CC) $(CFLAGS) -o $@ $^
 
-social_media_friends.o:
+social_media.o:
 	$(CC) $(CFLAGS) -c -D TASK_1 -o $@ social_media.c
 
 $(USERS).o: $(USERS).c $(USERS).h

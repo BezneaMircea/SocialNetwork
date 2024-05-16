@@ -1,0 +1,82 @@
+==18471== Memcheck, a memory error detector
+==18471== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==18471== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==18471== Command: ./friends
+==18471== Parent PID: 18420
+==18471== 
+==18471== 
+==18471== HEAP SUMMARY:
+==18471==     in use at exit: 21,931 bytes in 1,096 blocks
+==18471==   total heap usage: 1,107 allocs, 11 frees, 34,836 bytes allocated
+==18471== 
+==18471== 24 bytes in 6 blocks are indirectly lost in loss record 1 of 10
+==18471==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==18471==    by 0x109EDB: ll_add_nth_node (linked_list.c:53)
+==18471==    by 0x10B0DB: lg_add_edge (graph_with_list.c:37)
+==18471==    by 0x109903: add_friend (friends_functions.c:22)
+==18471==    by 0x1096D5: handle_input_friends (friends.c:20)
+==18471==    by 0x10B443: main (social_media.c:52)
+==18471== 
+==18471== 24 bytes in 6 blocks are indirectly lost in loss record 2 of 10
+==18471==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==18471==    by 0x109EDB: ll_add_nth_node (linked_list.c:53)
+==18471==    by 0x10B103: lg_add_edge (graph_with_list.c:38)
+==18471==    by 0x109903: add_friend (friends_functions.c:22)
+==18471==    by 0x1096D5: handle_input_friends (friends.c:20)
+==18471==    by 0x10B443: main (social_media.c:52)
+==18471== 
+==18471== 96 bytes in 6 blocks are indirectly lost in loss record 3 of 10
+==18471==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==18471==    by 0x109E7B: ll_add_nth_node (linked_list.c:50)
+==18471==    by 0x10B0DB: lg_add_edge (graph_with_list.c:37)
+==18471==    by 0x109903: add_friend (friends_functions.c:22)
+==18471==    by 0x1096D5: handle_input_friends (friends.c:20)
+==18471==    by 0x10B443: main (social_media.c:52)
+==18471== 
+==18471== 96 bytes in 6 blocks are indirectly lost in loss record 4 of 10
+==18471==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==18471==    by 0x109E7B: ll_add_nth_node (linked_list.c:50)
+==18471==    by 0x10B103: lg_add_edge (graph_with_list.c:38)
+==18471==    by 0x109903: add_friend (friends_functions.c:22)
+==18471==    by 0x1096D5: handle_input_friends (friends.c:20)
+==18471==    by 0x10B443: main (social_media.c:52)
+==18471== 
+==18471== 500 bytes in 1 blocks are definitely lost in loss record 5 of 10
+==18471==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==18471==    by 0x10B3FB: main (social_media.c:40)
+==18471== 
+==18471== 3,831 bytes in 518 blocks are still reachable in loss record 6 of 10
+==18471==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==18471==    by 0x1094B7: init_users (users.c:29)
+==18471==    by 0x10B3EC: main (social_media.c:36)
+==18471== 
+==18471== 4,144 bytes in 1 blocks are still reachable in loss record 7 of 10
+==18471==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==18471==    by 0x109454: init_users (users.c:22)
+==18471==    by 0x10B3EC: main (social_media.c:36)
+==18471== 
+==18471== 4,400 bytes in 1 blocks are indirectly lost in loss record 8 of 10
+==18471==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==18471==    by 0x10AFF9: lg_create (graph_with_list.c:19)
+==18471==    by 0x10B409: main (social_media.c:42)
+==18471== 
+==18471== 8,800 bytes in 550 blocks are indirectly lost in loss record 9 of 10
+==18471==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==18471==    by 0x109D91: ll_create (linked_list.c:13)
+==18471==    by 0x10B07D: lg_create (graph_with_list.c:23)
+==18471==    by 0x10B409: main (social_media.c:42)
+==18471== 
+==18471== 13,456 (16 direct, 13,440 indirect) bytes in 1 blocks are definitely lost in loss record 10 of 10
+==18471==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==18471==    by 0x10AF90: lg_create (graph_with_list.c:15)
+==18471==    by 0x10B409: main (social_media.c:42)
+==18471== 
+==18471== LEAK SUMMARY:
+==18471==    definitely lost: 516 bytes in 2 blocks
+==18471==    indirectly lost: 13,440 bytes in 575 blocks
+==18471==      possibly lost: 0 bytes in 0 blocks
+==18471==    still reachable: 7,975 bytes in 519 blocks
+==18471==         suppressed: 0 bytes in 0 blocks
+==18471== 
+==18471== For lists of detected and suppressed errors, rerun with: -s
+==18471== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)

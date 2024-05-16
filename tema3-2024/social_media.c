@@ -42,10 +42,10 @@ int main(void)
 	list_graph_t *graph = lg_create(MAX_PEOPLE);
 
 	while (1) {
-		input = fgets(input, MAX_COMMAND_LEN, stdin);
+		char *command = fgets(input, MAX_COMMAND_LEN, stdin);
 
 		// If fgets returns null, we reached EOF
-		if (!input)
+		if (!command)
 			break;
 
 		#ifdef TASK_1
@@ -61,5 +61,8 @@ int main(void)
 		#endif
 	}
 
+	purge_graph(&graph);
+	free_users();
+	free(input);
 	return 0;
 }
