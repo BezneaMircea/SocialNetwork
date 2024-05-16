@@ -25,16 +25,19 @@ void handle_input_friends(list_graph_t *graph, char *input)
 		remove_friend(graph, name1, name2);
 
 	} else if (!strcmp(cmd, "suggestions")) {
-		(void)cmd;
-		// TODO: Add function
+		char *user = strtok(NULL, "\n ");
+		suggestions_friend(graph, user);
+
 	} else if (!strcmp(cmd, "distance")) {
 		char *name1 = strtok(NULL, "\n ");
 		char *name2 = strtok(NULL, "\n ");
 		distance_friend(graph, name1, name2);
 
 	} else if (!strcmp(cmd, "common")) {
-		(void)cmd;
-		// TODO: Add function
+		char *name1 = strtok(NULL, "\n ");
+		char *name2 = strtok(NULL, "\n ");
+		common_friends(graph, name1, name2);
+
 	} else if (!strcmp(cmd, "friends")) {
 		char *name = strtok(NULL, "\n ");
 		int id = get_user_id(name);

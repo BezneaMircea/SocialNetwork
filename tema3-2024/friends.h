@@ -17,6 +17,10 @@ void add_friend(list_graph_t *graph, char *name1, char *name2);
 
 void remove_friend(list_graph_t *graph, char *name1, char *name2);
 
+void suggestions_friend(list_graph_t *graph, char *user);
+
+void common_friends(list_graph_t *graph, char *name1, char *name2);
+
 void distance_friend(list_graph_t *graph, char *name1, char *name2);
 
 void most_popular(list_graph_t *graph, char *user);

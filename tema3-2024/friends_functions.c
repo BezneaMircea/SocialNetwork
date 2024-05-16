@@ -41,6 +41,104 @@ void remove_friend(list_graph_t *graph, char *name1, char *name2) {
 }
 
 /**
+ * @brief Functia afseaza toti prietenii prietenilor,
+ * care nu sunt deja prieteni cu user
+ * @param graph: Graful
+ * @param user: Numele utilizatorului
+*/
+void suggestions_friend(list_graph_t *graph, char *user) {
+	int id = get_user_id(user);
+	linked_list_t *user_friends = graph->neighbors[id];
+	
+	int nr_suggestions = 0;
+	int *suggestions = calloc(MAX_PEOPLE, sizeof(int));
+
+	ll_node_t *friend = user_friends->head;
+
+	while (friend) {
+		int friend_id = *(int *)friend->data;
+
+		linked_list_t *list_friends_of_friend = graph->neighbors[friend_id];
+
+		ll_node_t *friend_of_friend = list_friends_of_friend->head;
+		while (friend_of_friend) {
+			int friend_of_friend_id = *(int *)friend_of_friend->data;
+
+			if (friend_of_friend_id != id &&
+				!lg_has_edge(graph, id, friend_of_friend_id)) {
+				suggestions[friend_of_friend_id] = 1;
+				nr_suggestions++;
+			}
+
+			friend_of_friend = friend_of_friend->next;
+		}
+
+		friend = friend->next;
+	}
+
+
+	if (nr_suggestions == 0) {
+		printf("There are no suggestions for %s:\n", user);
+	} else {
+		printf("Suggestions for %s:\n", user);
+		
+		for (int i = 0; i < MAX_PEOPLE; i++) {
+			if (suggestions[i] != 0)
+				printf("%s\n", get_user_name(i));
+		}
+	}
+	free(suggestions);
+}
+
+/**
+ * @brief Functia afiseaza prietenii comuni ai doi utilizatori
+ * @param name1: Numele primului utilizator
+ * @param name2: Numele celui de-al doilea utilizator
+*/
+void common_friends(list_graph_t *graph, char *name1, char *name2) {
+	int id_name1 = get_user_id(name1);
+	int id_name2 = get_user_id(name2);
+
+	int *common_friends = calloc(MAX_PEOPLE, sizeof(int));
+	int nr_common = 0;
+
+	linked_list_t *list_user = graph->neighbors[id_name1];
+
+	ll_node_t *friend = list_user->head;
+
+	while (friend) {
+		int friend_id = *(int *)friend->data;
+		common_friends[friend_id]++;
+		if (common_friends[friend_id] == 2)
+			nr_common++;
+		friend = friend->next;
+	}
+
+	list_user = graph->neighbors[id_name2];
+	friend = list_user->head;
+
+	while (friend) {
+		int friend_id = *(int *)friend->data;
+		common_friends[friend_id]++;
+		if (common_friends[friend_id] == 2)
+			nr_common++;
+		friend = friend->next;
+	}
+
+	if (nr_common == 0) {
+		printf("No common friends for %s and %s\n", name1, name2);
+	} else {
+		printf("The common friends between %s and %s are:\n", name1, name2);
+		for (int i = 0; i < MAX_PEOPLE; i++)
+			if (common_friends[i] == 2)
+				printf("%s\n", get_user_name(i));
+	}
+
+	free(common_friends);
+}
+
+
+/**
  * @brief Functia afiseaza distanta dintre doi utilizatori
  * @param name1: Numele primului utilizator
  * @param name2: Numele celui de-al doilea utilizator
