@@ -36,3 +36,20 @@ void create_post(char *name, char *titlu, g_tree **tree, int id) {
 	/// add more shit if needed
 	g_tree_insert(*tree, &data_to_insert);
 }
+
+void print_sub_tree(g_tree_node *node, int was_it_a_repost) {
+
+	if (!node)
+		return;
+
+	if (!was_it_a_repost) {
+		printf("%s - Post #%d by %s\n", ((tree_data *)(node->data))->post_name,
+			   ((tree_data *)(node->data))->id,
+			   get_user_name(((tree_data *)(node->data))->user_id));
+	} else {
+		printf("Repost #%d by %s\n", ((tree_data *)(node->data))->id,
+			   get_user_name(((tree_data *)(node->data))->user_id));
+	}
+	for (int i = 0; i < node->nr_children; i++)
+		print_sub_tree(node->children[i], 1);
+}

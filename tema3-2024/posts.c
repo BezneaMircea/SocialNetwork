@@ -49,8 +49,8 @@ void handle_input_posts(char *input, g_tree **tree_vector)
 
 		g_tree_insert(tree_vector[post_id], &data_to_add);
 		printf("Created Repost #%d for %s\n", data_to_add.id, name);
-		print_sub_tree(tree_vector[post_id]->root);
-		printf("\n");
+		// print_sub_tree(tree_vector[post_id]->root);
+		// printf("\n");
 	}
 		// TODO: Add function
 	else if (!strcmp(cmd, "common-repost"))
@@ -68,8 +68,29 @@ void handle_input_posts(char *input, g_tree **tree_vector)
 	else if (!strcmp(cmd, "get-likes"))
 		(void)cmd;
 		// TODO: Add function
-	else if (!strcmp(cmd, "get-reposts"))
-		(void)cmd;
+	else if (!strcmp(cmd, "get-reposts")) {
+		int post_id = atoi(strtok(NULL, "\n "));
+		char *repost_id_string = strtok(NULL, "\n ");
+
+
+		g_tree_node node_to_get_repost_from;
+		node_to_get_repost_from.data = malloc(sizeof(tree_data));
+		((tree_data *)(node_to_get_repost_from.data))->parrent_id = post_id;
+
+		int repost_id;
+		int was_it_a_repost = 0;
+		if (repost_id_string) {
+			repost_id = atoi(repost_id_string);
+			((tree_data *)(node_to_get_repost_from.data))->parrent_id = repost_id;
+			was_it_a_repost = 1;
+		}
+
+		g_tree_node *sub_tree_root = get_node(tree_vector[post_id]->root,
+											  &node_to_get_repost_from,
+											  tree_vector[post_id]->compare);
+		
+		print_sub_tree(sub_tree_root, was_it_a_repost);
+	}
 		// TODO: Add function
 	else if (!strcmp(cmd, "get-likes"))
 		(void)cmd;

@@ -228,17 +228,3 @@ void purge_g_tree(g_tree **tree)
 
 	*tree = NULL;
 }
-
-void print_sub_tree(g_tree_node *node)
-{
-    if (!node)
-        return;
-
-    printf("%d: ", ((tree_data *)(node->data))->id);
-    for (int i = 0; i < node->nr_children; i++)
-        printf("%d ", ((tree_data *)(node->children[i]->data))->id);
-    printf("\n");
-
-    for (int i = 0; i < node->nr_children; i++)
-        print_sub_tree(node->children[i]);
-}

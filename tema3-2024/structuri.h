@@ -164,6 +164,5 @@ void purge_g_tree(g_tree **tree);
 void clear_tree(g_tree_node *node, void (*free_data)(void *));
 g_tree_node *get_node(g_tree_node *node, g_tree_node *node_to_add,
 					  int (*compare)(void *, void *));
-void print_sub_tree(g_tree_node *node);
 
 #endif
