@@ -10,6 +10,7 @@
 #include "posts.h"
 #include "feed.h"
 
+#define MAX_POSTS_NR 100
 /**
  * Initializez every task based on which task we are running
 */
@@ -34,16 +35,17 @@ void init_tasks(void)
 int main(void)
 {
 	init_users();
-
 	init_tasks();
 
 	char *input = (char *)malloc(MAX_COMMAND_LEN);
 
 	list_graph_t *graph = lg_create(MAX_PEOPLE);
-    g_tree **tree_vector = malloc(100 * sizeof(g_tree *));
-    /// VEZI CA AI LASAT 100 aici
+	g_tree **tree_vector = malloc(MAX_POSTS_NR * sizeof(g_tree *));
+	for (int i = 0; i < MAX_POSTS_NR; i++)
+		tree_vector[i] = NULL;
+	/// VEZI CA AI LASAT 100 aici
 
-    
+	
 	while (1) {
 		char *command = fgets(input, MAX_COMMAND_LEN, stdin);
 
@@ -67,5 +69,11 @@ int main(void)
 	purge_graph(&graph);
 	free_users();
 	free(input);
+
+	for (int i = 0; i < MAX_POSTS_NR; i++)
+		if (tree_vector[i])
+			purge_g_tree(&tree_vector[i]);
+	free(tree_vector);
+
 	return 0;
 }

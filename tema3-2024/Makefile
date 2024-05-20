@@ -1,4 +1,3 @@
-
 CC=gcc -g
 CFLAGS=-Wall -Wextra
 
@@ -26,14 +25,17 @@ build: friends posts
 # Any other object file that is needed for the other files
 # add it here, separated by space
 
-friends: $(USERS).o $(FRIENDS).o $(FRIENDS_F).o $(LL_LIST).o $(DLL_LIST).o $(QUEUE).o $(STACK).o $(GRAPH).o friends.o social_media.o
+friends: $(USERS).o $(FRIENDS).o $(FRIENDS_F).o $(LL_LIST).o $(DLL_LIST).o $(QUEUE).o $(STACK).o $(G_TREE).o $(GRAPH).o social_media_friends.o
 	$(CC) $(CFLAGS) -o $@ $^
 
-posts: $(USERS).o $(POSTS).o $(POSTS_F).o $(G_TREE).o social_media.o
+posts: $(USERS).o $(LL_LIST).o $(DLL_LIST).o $(QUEUE).o $(STACK).o $(POSTS).o $(POSTS_F).o $(GRAPH).o $(G_TREE).o social_media_posts.o
 	$(CC) $(CFLAGS) -o $@ $^
 
-social_media.o:
-	$(CC) $(CFLAGS) -c -D TASK_1 -D TASK_2 -o $@ social_media.c
+social_media_friends.o:
+	$(CC) $(CFLAGS) -c -D TASK_1 -o $@ social_media.c
+
+social_media_posts.o:
+	$(CC) $(CFLAGS) -c -D TASK_2 -o $@ social_media.c
 
 $(USERS).o: $(USERS).c $(USERS).h
 	$(CC) $(CFLAGS) $^ -c

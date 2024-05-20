@@ -1,4 +1,5 @@
 #include "structuri.h"
+#include "posts.h"
 
 /** @brief Functia creeaza un nod
  *  @param data: Datele pe care le va contine nodul
@@ -49,8 +50,8 @@ g_tree *g_tree_create(unsigned int data_size, int (*compare)(void *, void *),
 	return tree;
 }
 
-/** @brief Funcita cauta recursiv nodul unde trebuie sa adauge un copilul
- *		   node_to_add.
+/** @brief Funcita cauta recursiv nodul unde trebuie sa adauge copilul
+ *		   node_to_add. IN FUNCTIA COMPARE PARINTELE E MEREU PRIMUL
  *  @param node: Nodul curent
  *  @param node_to_add: Nodul pe care vrem sa il adaugam
  *  @param compare: Pointer spre o functie de comparare a nodurilor din arbore.
@@ -136,7 +137,7 @@ void remove_kid(g_tree_node *node, int i) {
 }
 
 static
-g_tree_node *destroy_edge(g_tree_node *node, void *data,
+g_tree_node *destroy_edge(g_tree_node *node, g_tree_node *node_to_remove,
 						  int (*compare)(void *, void *))
 {
 	g_tree_node *node_to_return;
@@ -149,14 +150,14 @@ g_tree_node *destroy_edge(g_tree_node *node, void *data,
 		return NULL;
 
 	for (int i = 0; i < node->nr_children; i++) {
-		cmp_res = compare(node->children[i]->data, data);
+		cmp_res = compare(node->children[i], node_to_remove);
 		if (!cmp_res) {
 			node_to_return = node->children[i];
 			remove_kid(node, i);
 			return node_to_return;
 		} else if (cmp_res == -1) {
 			/// daca copilul este mai mic decat data
-			node_to_return = destroy_edge (node->children[i], data, compare);
+			node_to_return = destroy_edge(node->children[i], node_to_remove, compare);
 			if (node_to_return)
 				return node_to_return;
 		}
@@ -169,11 +170,11 @@ g_tree_node *destroy_edge(g_tree_node *node, void *data,
  * 		   cu informatia data si acesta. Facand ca parintele sa pointeze
  * 		   spre NULL
  *  @param tree: Arborele in care vrem sa distrugem legatura
- *  @param data: Nodul pe care vrem sa il eliminam din arbore
+ *  @param data_to_remove: Nodul pe care vrem sa il eliminam din arbore
  *  @return Functia intoarce nodul ce contine informatia data. Cel care
  * 			a fost eliminat din arbore.
  */
-g_tree_node *remove_g_subtree(g_tree *tree, void *data) {
+g_tree_node *remove_g_subtree(g_tree *tree, g_tree_node *node_to_remove) {
 	if (!tree)
 		return NULL;
 
@@ -182,15 +183,13 @@ g_tree_node *remove_g_subtree(g_tree *tree, void *data) {
 	
 	g_tree_node *node_to_return = tree->root;
 
-	if (!tree->compare(tree->root->data, data)) {
+	if (!tree->compare(tree->root, node_to_remove)) {
 		tree->root = NULL;
 		return node_to_return;
 	}
 	/// Am tratat cazul in care vrem sa eliminam o postare
 
-	return destroy_edge(node_to_return, data, tree->compare);
-
-
+	return destroy_edge(node_to_return, node_to_remove, tree->compare);
 }
 
 /** @brief Functia elibereaza memoria consumata de tot subarborele care pleaca
@@ -228,4 +227,18 @@ void purge_g_tree(g_tree **tree)
 	free(tree_to_remove);
 
 	*tree = NULL;
+}
+
+void print_sub_tree(g_tree_node *node)
+{
+    if (!node)
+        return;
+
+    printf("%d: ", ((tree_data *)(node->data))->id);
+    for (int i = 0; i < node->nr_children; i++)
+        printf("%d ", ((tree_data *)(node->children[i]->data))->id);
+    printf("\n");
+
+    for (int i = 0; i < node->nr_children; i++)
+        print_sub_tree(node->children[i]);
 }
