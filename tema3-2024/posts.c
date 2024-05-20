@@ -48,7 +48,7 @@ void handle_input_posts(char *input, g_tree **tree_vector)
 		}
 
 		g_tree_insert(tree_vector[post_id], &data_to_add);
-		printf("Created Repost #%d for %s\n", data_to_add.id, name);
+		printf("Created repost #%d for %s\n", data_to_add.id, name);
 		// print_sub_tree(tree_vector[post_id]->root);
 		// printf("\n");
 	}
@@ -89,6 +89,7 @@ void handle_input_posts(char *input, g_tree **tree_vector)
 											  &node_to_get_repost_from,
 											  tree_vector[post_id]->compare);
 		
+		free(node_to_get_repost_from.data);
 		print_sub_tree(sub_tree_root, was_it_a_repost);
 	}
 		// TODO: Add function

@@ -43,8 +43,7 @@ void print_sub_tree(g_tree_node *node, int was_it_a_repost) {
 		return;
 
 	if (!was_it_a_repost) {
-		printf("%s - Post #%d by %s\n", ((tree_data *)(node->data))->post_name,
-			   ((tree_data *)(node->data))->id,
+		printf("%s - Post by %s\n", ((tree_data *)(node->data))->post_name,
 			   get_user_name(((tree_data *)(node->data))->user_id));
 	} else {
 		printf("Repost #%d by %s\n", ((tree_data *)(node->data))->id,
