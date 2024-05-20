@@ -3,9 +3,10 @@
 #include <string.h>
 
 #include "users.h"
+#include "structuri.h"
 #include "posts.h"
 
-void handle_input_posts(char *input)
+void handle_input_posts(char *input, g_tree **tree_vector)
 {
 	char *commands = strdup(input);
 	char *cmd = strtok(commands, "\n ");
@@ -13,8 +14,11 @@ void handle_input_posts(char *input)
 	if (!cmd)
 		return;
 
-	if (!strcmp(cmd, "create"))
-		(void)cmd;
+	if (!strcmp(cmd, "create")) {	
+		char *nume = strtok(NULL, "\n ");
+		char *titlu = strtok(NULL, "\n ");
+		
+	}
 		// TODO: Add function
 	else if (!strcmp(cmd, "repost"))
 		(void)cmd;

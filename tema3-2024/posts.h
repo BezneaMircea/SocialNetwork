@@ -6,6 +6,14 @@
  *
  * Please add any necessary parameters to the functions
 */
-void handle_input_posts(char *input);
+// typedef struct tree_data tree_data;
+// struct tree_data
+// {
+// 	unsigned int id, user_id;
+// 	int nr_likes;
+// 	int likes[MAX_PEOPLE];
+// };
+
+void handle_input_posts(char *input, g_tree **tree_vector);
 
 #endif // POSTS_H

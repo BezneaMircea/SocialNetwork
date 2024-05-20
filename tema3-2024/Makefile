@@ -1,3 +1,4 @@
+
 CC=gcc -g
 CFLAGS=-Wall -Wextra
 
@@ -11,12 +12,15 @@ DLL_LIST=double_linked_list
 USERS=users
 STACK=stack
 GRAPH=graph_with_list
+G_TREE=generic_tree
+POSTS=posts
+POSTS_F=posts_functions
 
 .PHONY: build clean
 
 all: build
 
-build: friends
+build: friends posts
 # We need to add posts and feed on the build rule
 
 # Any other object file that is needed for the other files
@@ -25,8 +29,11 @@ build: friends
 friends: $(USERS).o $(FRIENDS).o $(FRIENDS_F).o $(LL_LIST).o $(DLL_LIST).o $(QUEUE).o $(STACK).o $(GRAPH).o friends.o social_media.o
 	$(CC) $(CFLAGS) -o $@ $^
 
+posts: $(USERS).o $(POSTS).o $(POSTS_F).o $(G_TREE).o social_media.o
+	$(CC) $(CFLAGS) -o $@ $^
+
 social_media.o:
-	$(CC) $(CFLAGS) -c -D TASK_1 -o $@ social_media.c
+	$(CC) $(CFLAGS) -c -D TASK_1 -D TASK_2 -o $@ social_media.c
 
 $(USERS).o: $(USERS).c $(USERS).h
 	$(CC) $(CFLAGS) $^ -c
@@ -52,5 +59,14 @@ $(FRIENDS).o: $(FRIENDS).c $(FRIENDS).h
 $(FRIENDS_F).o: $(FRIENDS_F).c $(FRIENDS).h
 	$(CC) $(CFLAGS) $^ -c
 
+$(POSTS).o: $(POSTS).c $(POSTS).h
+	$(CC) $(CFLAGS) $^ -c
+
+$(POSTS_F).o: $(POSTS_F).c $(POSTS).h
+	$(CC) $(CFLAGS) $^ -c
+
+$(G_TREE).o: $(G_TREE).c $(STRUCTURI).h
+	$(CC) $(CFLAGS) $^ -c
+
 clean:
-	rm -rf *.o friends posts feed
+	rm -rf *.o *.gch friends posts

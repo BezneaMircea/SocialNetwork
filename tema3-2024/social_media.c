@@ -40,7 +40,10 @@ int main(void)
 	char *input = (char *)malloc(MAX_COMMAND_LEN);
 
 	list_graph_t *graph = lg_create(MAX_PEOPLE);
+    g_tree **tree_vector = malloc(100 * sizeof(g_tree *));
+    /// VEZI CA AI LASAT 100 aici
 
+    
 	while (1) {
 		char *command = fgets(input, MAX_COMMAND_LEN, stdin);
 
@@ -53,7 +56,7 @@ int main(void)
 		#endif
 
 		#ifdef TASK_2
-		handle_input_posts(input);
+		handle_input_posts(input, tree_vector);
 		#endif
 
 		#ifdef TASK_3
