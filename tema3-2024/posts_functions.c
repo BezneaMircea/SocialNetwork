@@ -80,7 +80,42 @@ void print_sub_tree(g_tree_node *node, int was_it_a_repost) {
 		print_sub_tree(node->children[i], 1);
 }
 
-void get_reposts(g_tree **tree_vector) {
+void like (g_tree **tree_vector) {
+	(void)(tree_vector);
+}
+
+void get_likes (g_tree **tree_vector) {
+	int post_id = atoi(strtok(NULL, "\n "));
+	char *repost_id_string = strtok(NULL, "\n ");
+
+	g_tree_node look_for_node_likes;
+	look_for_node_likes.data = malloc(sizeof(tree_data));
+	((tree_data *)(look_for_node_likes.data))->parrent_id = post_id;
+
+	int repost_id;
+	int was_it_a_repost = 0;
+	if (repost_id_string) {
+		repost_id = atoi(repost_id_string);
+		((tree_data *)(look_for_node_likes.data))->parrent_id = repost_id;
+		was_it_a_repost = 1;
+	}
+
+	g_tree_node *node_likes = get_node(tree_vector[post_id]->root,
+									   &look_for_node_likes,
+									   tree_vector[post_id]->compare);
+	
+	if (was_it_a_repost)
+		printf("Repost #%d has %d likes\n", repost_id,
+			   ((tree_data *)(node_likes->data))->nr_likes);
+	else
+		printf("Post %s has %d likes\n",
+			   ((tree_data *)(node_likes->data))->post_name,
+			   ((tree_data *)(node_likes->data))->nr_likes);
+	
+	free(look_for_node_likes.data);
+}
+
+void get_reposts (g_tree **tree_vector) {
 	int post_id = atoi(strtok(NULL, "\n "));
 	char *repost_id_string = strtok(NULL, "\n ");
 
@@ -132,4 +167,29 @@ void delete(g_tree **tree_vector) {
 
 	clear_tree(sub_tree_root, tree_vector[post_id]->free_data);
 	free(node_to_delete_from.data);
+}
+
+void ratio(g_tree **tree_vector) {
+	int post_id = atoi(strtok(NULL, "\n "));
+
+	g_tree *tree = tree_vector[post_id];
+	g_tree_node *root_node = tree->root;
+
+	int max_likes = ((tree_data *)(root_node->data))->nr_likes;
+	int og_post_id = ((tree_data *)(root_node->data))->id;
+
+	int post_that_ratioed = og_post_id;
+	for (int i = 0; i < root_node->nr_children; i++) {
+		int cur_likes = ((tree_data *)(root_node->children[i]->data))->nr_likes;
+		int cur_id = ((tree_data *)(root_node->children[i]->data))->id;
+		if (cur_likes > max_likes)
+			post_that_ratioed = cur_id;
+	}
+	
+	if (post_that_ratioed == og_post_id) {
+		printf("The original post is the highest rated\n");
+	} else {
+		printf("Post %d got ratio'd by repost %d\n", og_post_id,
+			   post_that_ratioed);
+	}
 }

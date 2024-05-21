@@ -23,8 +23,11 @@ struct tree_data
 
 void handle_input_posts(char *input, g_tree **tree_vector);
 void create_post(g_tree **tree, int id);
+void like(g_tree **tree_vector);
+void get_likes(g_tree **tree_vector);
 void get_reposts(g_tree **tree_vector);
 void repost(g_tree **tree_vector, int id);
 void delete(g_tree **tree_vector);
+void ratio(g_tree **tree_vector);
 
 #endif // POSTS_H
