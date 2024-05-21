@@ -328,8 +328,5 @@ g_tree_node *least_comm_ancestor(g_tree *tree, g_tree_node *node1,
 	free(vizitat);
 	free(dist);
 	
-	return ancestor;
-
-	// trebuie sa dau free la parents
-	
+	return ancestor;	
 }

@@ -234,6 +234,110 @@ void ratio(g_tree **tree_vector) {
 	}
 }
 
+static
+void bfs(g_tree_node *node, g_tree_node **parent, int *vizitat, int *dist) {
+	dist[((tree_data *)(node->data))->id] = 0;
+	vizitat[((tree_data *)(node->data))->id] = 1;
+
+	queue_t *queue = q_create(sizeof(g_tree_node *), MAX_PEOPLE);
+	q_enqueue(queue, &node);
+
+	while(!q_is_empty(queue)) {
+		g_tree_node *current_node = *(g_tree_node **)q_front(queue);
+		q_dequeue(queue);
+
+		for (int i = 0; i < current_node->nr_children; i++) {
+			if (!vizitat[((tree_data *)(current_node->children[i]->data))->id]) {
+				vizitat[((tree_data *)(current_node->children[i]->data))->id] = 1;
+				dist[((tree_data *)(current_node->children[i]->data))->id] = dist[((tree_data *)(current_node->data))->id] + 1;
+				parent[((tree_data *)(current_node->children[i]->data))->id] = current_node;
+				q_enqueue(queue, &current_node->children[i]);
+			}
+		}
+	}
+
+	q_free(queue);
+	free(queue);
+}
+
+static
+g_tree_node *get_that_ancestor(g_tree *tree, g_tree_node *node1,
+							   g_tree_node *node2, g_tree_node **parent,
+							   int *dist)
+{
+	int dist1 = dist[((tree_data *)(node1->data))->id];
+	int dist2 = dist[((tree_data *)(node2->data))->id];
+
+	if (dist1 > dist2) {
+		int d = dist1 - dist2;
+		while (d > 0) {
+			node1 = parent[((tree_data *)(node1->data))->id];
+			d--;
+		}
+	} else {
+		int d = dist2 - dist1;
+		while (d > 0) {
+			node2 = parent[((tree_data *)(node2->data))->id];
+			d--;
+		}
+	}
+
+	if (node1 == node2)
+		return node1;
+
+	if (tree->root == node1 || tree->root == node2)
+			return tree->root;
+
+	while (parent[((tree_data *)(node1->data))->id] != parent[((tree_data *)(node2->data))->id]) {
+		if (tree->root == node1 || tree->root == node2)
+			return tree->root;
+		node1 = parent[((tree_data *)(node1->data))->id];
+		node2 = parent[((tree_data *)(node2->data))->id];
+	}
+	return parent[((tree_data *)(node1->data))->id];
+}
+
+static 
+g_tree_node *least_comm_ancestor(g_tree *tree, g_tree_node *node1,
+								 g_tree_node *node2)
+{
+	if (!tree) {
+		printf("Create a tree first\n");
+		return NULL;
+	}
+
+	if (!node1 || !node2) {
+		printf("Ancestor for NULL? Really?\n");
+		return NULL;
+	}
+
+	if (!tree->root) {
+		printf("Dude... Tree is empty, stop trying\n");
+		return NULL;
+	}
+
+	if (!tree->root->nr_children) {
+		printf("I have no kids!!!\n");
+		return NULL;
+	}
+
+	if (tree->root == node1 || tree->root == node2)
+		return tree->root;
+
+	g_tree_node **parent = malloc(MAX_PEOPLE * sizeof(g_tree_node *));
+	int *vizitat = calloc(MAX_PEOPLE, sizeof(int));
+	int *dist = calloc(MAX_PEOPLE, sizeof(int));
+	bfs(tree->root, parent, vizitat, dist);
+
+	g_tree_node *ancestor = get_that_ancestor(tree, node1, node2, parent, dist);
+	
+	free(parent);
+	free(vizitat);
+	free(dist);
+	
+	return ancestor;	
+}
+
 void common_repost(g_tree **tree_vector) {
 	int post_id = atoi(strtok(NULL, "\n "));
 	int repost_id1 = atoi(strtok(NULL, "\n "));
