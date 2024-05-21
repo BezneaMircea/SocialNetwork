@@ -66,7 +66,6 @@ void repost(g_tree **tree_vector, int id) {
 }
 
 void print_sub_tree(g_tree_node *node, int was_it_a_repost) {
-
 	if (!node)
 		return;
 
