@@ -81,7 +81,47 @@ void print_sub_tree(g_tree_node *node, int was_it_a_repost) {
 }
 
 void like (g_tree **tree_vector) {
-	(void)(tree_vector);
+	char *name = strtok(NULL, "\n ");
+	int post_id = atoi(strtok(NULL, "\n "));
+	char *repost_id_string = strtok(NULL, "\n ");
+
+
+	g_tree_node look_for_node_to_like;
+	look_for_node_to_like.data = malloc(sizeof(tree_data));
+	((tree_data *)(look_for_node_to_like.data))->parrent_id = post_id;
+
+	int repost_id;
+	int was_it_a_repost = 0;
+	if (repost_id_string) {
+		repost_id = atoi(repost_id_string);
+		((tree_data *)(look_for_node_to_like.data))->parrent_id = repost_id;
+		was_it_a_repost = 1;
+	}
+
+	g_tree_node *node_to_like = get_node(tree_vector[post_id]->root,
+										&look_for_node_to_like,
+										tree_vector[post_id]->compare);
+
+	unsigned int like_user_id = get_user_id(name);
+	char *post_name = ((tree_data *)(tree_vector[post_id]->root->data))->post_name;
+
+	if (((tree_data *)(node_to_like->data))->likes[like_user_id] == 0) {
+		((tree_data *)(node_to_like->data))->nr_likes++;
+		((tree_data *)(node_to_like->data))->likes[like_user_id] = 1;
+		if (was_it_a_repost)
+			printf("User %s liked repost %s\n", name, post_name);
+		else
+			printf("User %s liked post %s\n", name, post_name);
+	} else {
+		((tree_data *)(node_to_like->data))->nr_likes--;
+		((tree_data *)(node_to_like->data))->likes[like_user_id] = 0;
+		if (was_it_a_repost)
+			printf("User %s unliked repost %s\n", name, post_name);
+		else
+			printf("User %s unliked post %s\n", name, post_name);
+	}
+	
+	free(look_for_node_to_like.data);
 }
 
 void get_likes (g_tree **tree_vector) {

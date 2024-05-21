@@ -33,8 +33,9 @@ void handle_input_posts(char *input, g_tree **tree_vector)
 		// TODO: Add function
 	else if (!strcmp(cmd, "like"))
 		like(tree_vector);
-	else if (!strcmp(cmd, "ratio"))
-		(void)cmd;
+	else if (!strcmp(cmd, "ratio")) {
+		ratio(tree_vector);
+	}
 		// TODO: Add function
 	else if (!strcmp(cmd, "delete")) {
 		delete(tree_vector);
