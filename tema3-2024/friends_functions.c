@@ -14,7 +14,10 @@
  * @param name1: Numele primului utilizator
  * @param name2: Numele celui de-al doilea utilizator
  */
-void add_friend(list_graph_t *graph, char *name1, char *name2) {
+void add_friend(list_graph_t *graph) {
+    char *name1 = strtok(NULL, "\n ");
+	char *name2 = strtok(NULL, "\n ");
+
 	int id_name1 = get_user_id(name1);
 	int id_name2 = get_user_id(name2);
 
@@ -30,7 +33,10 @@ void add_friend(list_graph_t *graph, char *name1, char *name2) {
  * @param name1: Numele primului utilizator
  * @param name2: Numele celui de-al doilea utilizator
  */
-void remove_friend(list_graph_t *graph, char *name1, char *name2) {
+void remove_friend(list_graph_t *graph) {
+    char *name1 = strtok(NULL, "\n ");
+	char *name2 = strtok(NULL, "\n ");
+
 	int id_name1 = get_user_id(name1);
 	int id_name2 = get_user_id(name2);
 
@@ -46,7 +52,9 @@ void remove_friend(list_graph_t *graph, char *name1, char *name2) {
  * @param graph: Graful
  * @param user: Numele utilizatorului
 */
-void suggestions_friend(list_graph_t *graph, char *user) {
+void suggestions_friend(list_graph_t *graph) {
+    char *user = strtok(NULL, "\n ");
+
 	int id = get_user_id(user);
 	linked_list_t *user_friends = graph->neighbors[id];
 
@@ -94,7 +102,10 @@ void suggestions_friend(list_graph_t *graph, char *user) {
  * @param name1: Numele primului utilizator
  * @param name2: Numele celui de-al doilea utilizator
 */
-void common_friends(list_graph_t *graph, char *name1, char *name2) {
+void common_friends(list_graph_t *graph) {
+    char *name1 = strtok(NULL, "\n ");
+	char *name2 = strtok(NULL, "\n ");
+
 	int id_name1 = get_user_id(name1);
 	int id_name2 = get_user_id(name2);
 
@@ -141,7 +152,10 @@ void common_friends(list_graph_t *graph, char *name1, char *name2) {
  * @param name1: Numele primului utilizator
  * @param name2: Numele celui de-al doilea utilizator
 */
-void distance_friend(list_graph_t *graph, char *name1, char *name2) {
+void distance_friend(list_graph_t *graph) {
+    char *name1 = strtok(NULL, "\n ");
+	char *name2 = strtok(NULL, "\n ");
+
 	int id_name1 = get_user_id(name1);
 	int id_name2 = get_user_id(name2);
 
@@ -189,7 +203,8 @@ void distance_friend(list_graph_t *graph, char *name1, char *name2) {
  * @param graph: Graful
  * @param user: Numele utilizatorului
  */
-void most_popular(list_graph_t *graph, char *user) {
+void most_popular(list_graph_t *graph) {
+    char *user = strtok(NULL, "\n ");
 	int id = get_user_id(user);
 
 	// numar de conexiuni ale utilizatorului
@@ -228,4 +243,10 @@ void most_popular(list_graph_t *graph, char *user) {
 	} else {
 		printf("%s is the most popular\n", user);
 	}
+}
+
+void how_many_friends(list_graph_t *graph) {
+    char *name = strtok(NULL, "\n ");
+	int id = get_user_id(name);
+	printf("%s has %d friends\n", name, graph->neighbors[id]->size);
 }

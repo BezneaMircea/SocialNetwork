@@ -13,16 +13,18 @@
 */
 void handle_input_friends(list_graph_t *graph, char *input);
 
-void add_friend(list_graph_t *graph, char *name1, char *name2);
+void add_friend(list_graph_t *graph);
 
-void remove_friend(list_graph_t *graph, char *name1, char *name2);
+void remove_friend(list_graph_t *graph);
 
-void suggestions_friend(list_graph_t *graph, char *user);
+void suggestions_friend(list_graph_t *graph);
 
-void common_friends(list_graph_t *graph, char *name1, char *name2);
+void common_friends(list_graph_t *graph);
 
-void distance_friend(list_graph_t *graph, char *name1, char *name2);
+void distance_friend(list_graph_t *graph);
 
-void most_popular(list_graph_t *graph, char *user);
+void most_popular(list_graph_t *graph);
+
+void how_many_friends(list_graph_t *graph);
 
 #endif // FRIENDS_H
