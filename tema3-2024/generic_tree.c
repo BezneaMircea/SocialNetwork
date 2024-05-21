@@ -227,3 +227,42 @@ void purge_g_tree(g_tree **tree)
 
 	*tree = NULL;
 }
+
+static
+g_tree_node *get_that_ancestor(g_tree_node *root, g_tree_node *node1,
+							   g_tree_node *node2,
+							   int (*compare)(void *, void *))
+{
+
+}
+
+g_tree_node *least_comm_ancestor(g_tree *tree, g_tree_node *node1,
+								 g_tree_node *node2)
+{
+	if (!tree) {
+		printf("Create a tree first\n");
+		return NULL;
+	}
+
+	if (!node1 || !node2) {
+		printf("Ancestor for NULL? Really?\n");
+		return NULL;
+	}
+
+	if (!tree->root) {
+		printf("Dude... Tree is empty, stop trying\n");
+		return NULL;
+	}
+
+	if (!tree->root->nr_children) {
+		printf("I have no kids!!!\n");
+		return NULL;
+	}
+
+	if (!tree->compare(tree->root, node1) || !(tree->compare(tree->root, node2))) {
+		printf("Root is the ancestor\n");
+		return tree->root;
+	}
+
+	return get_that_ancestor(tree->root, node1, node2, tree->compare);
+}
