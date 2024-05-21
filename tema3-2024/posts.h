@@ -17,13 +17,14 @@ struct tree_data
 {
 	unsigned int id, user_id, parrent_id;
 	int nr_likes;
-    char *post_name;
-    int *likes;
+	char *post_name;
+	int *likes;
 };
 
 void handle_input_posts(char *input, g_tree **tree_vector);
 void create_post(g_tree **tree, int id);
 void like(g_tree **tree_vector);
+void common_repost(g_tree **tree_vector);
 void get_likes(g_tree **tree_vector);
 void get_reposts(g_tree **tree_vector);
 void repost(g_tree **tree_vector, int id);

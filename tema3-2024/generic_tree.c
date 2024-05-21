@@ -8,7 +8,7 @@
  *  @return Returneaza un nod al arborelui generic
  */
 static g_tree_node *
-g_tree_create_node(void *data, unsigned max_children_nr,
+g_tree_create_node(void *data, unsigned int max_children_nr,
 				   unsigned int data_size)
 {
 	g_tree_node *node = malloc(sizeof(g_tree_node));
@@ -27,12 +27,12 @@ g_tree_create_node(void *data, unsigned max_children_nr,
 
 /** @brief Functia creeaza un arbore generic
  *  @param data_size: Dimensiunea datelor stocate in arbore
- *  @param compare: Pointer spre o functie de comparare a nodurilor din arbore.
- * 					Intoarce 1 daca primul nod este mai mare, 0 daca sunt egale,
- * 					-1 daca al doilea nod este mai mare
+ *  @param compare:	Pointer spre o functie de comparare a nodurilor din arbore.
+ *					Intoarce 1 daca primul nod este mai mare, 0 daca sunt egale,
+ *					-1 daca al doilea nod este mai mare
  *  @param max_children_nr: Numarul maxim de copii ai unui nod
  *  @param free_data: Functie de eliberare a datelor dintr-un nod
- * 					  daca se trimite NULL nu are niciun efect
+ *					  daca se trimite NULL nu are niciun efect
  *  @return Returneaza arborele generic
  */
 g_tree *g_tree_create(unsigned int data_size, int (*compare)(void *, void *),
@@ -60,9 +60,14 @@ g_tree *g_tree_create(unsigned int data_size, int (*compare)(void *, void *),
  * 						astfel incat functia compare sa il poata recunoaste in
  * 						arbore
  *  @param compare: Pointer spre o functie de comparare a nodurilor din arbore.
+<<<<<<< HEAD
  * 					Intoarce 1 daca primul nod este mai mare, 0 daca sunt egale,
  * 					-1 daca al doilea nod este mai mare
  *  @return Returneaza nodul corespunzator, conform functiei compare
+=======
+ *					Intoarce 1 daca primul nod este mai mare, 0 daca sunt egale,
+ *					-1 daca al doilea nod este mai mare
+>>>>>>> e55d7f5ab33a126fab60b8c1d87289b65ab089ab
  */
 g_tree_node *get_node(g_tree_node *node, g_tree_node *node_to_get,
 					  int (*compare)(void *, void *))
@@ -185,7 +190,8 @@ g_tree_node *destroy_edge(g_tree_node *node, g_tree_node *node_to_remove,
 			return node_to_return;
 		} else if (cmp_res == -1) {
 			/// daca copilul este mai mic decat data
-			node_to_return = destroy_edge(node->children[i], node_to_remove, compare);
+			node_to_return = destroy_edge(node->children[i], node_to_remove,
+										  compare);
 			if (node_to_return)
 				return node_to_return;
 		}
@@ -195,13 +201,17 @@ g_tree_node *destroy_edge(g_tree_node *node, g_tree_node *node_to_remove,
 }
 
 /** @brief Functia distruge legatura dintre parintele ce contine nodul
- * 		   cu informatia data si acesta. Facand ca parintele sa pointeze
- * 		   spre NULL
+ *		   cu informatia data si acesta. Facand ca parintele sa pointeze
+ *		   spre NULL
  *  @param tree: Arborele in care vrem sa distrugem legatura
  *  @param data_to_remove: Nodul pe care vrem sa il eliminam din arbore
  *  @return Functia intoarce nodul ce contine informatia data. Cel care
+<<<<<<< HEAD
  * 			a fost eliminat din arbore. Practic radacina subarborelui
  * 			eliminat
+=======
+ *			a fost eliminat din arbore.
+>>>>>>> e55d7f5ab33a126fab60b8c1d87289b65ab089ab
  */
 g_tree_node *remove_g_subtree(g_tree *tree, g_tree_node *node_to_remove) {
 	if (!tree)
@@ -209,7 +219,7 @@ g_tree_node *remove_g_subtree(g_tree *tree, g_tree_node *node_to_remove) {
 
 	if (!tree->root)
 		return NULL;
-	
+
 	g_tree_node *node_to_return = tree->root;
 
 	if (!tree->compare(tree->root, node_to_remove)) {
@@ -222,11 +232,11 @@ g_tree_node *remove_g_subtree(g_tree *tree, g_tree_node *node_to_remove) {
 }
 
 /** @brief Functia elibereaza memoria consumata de tot subarborele care pleaca
- * 		   de la node;
+ *		   de la node;
  *  @param node: radacina subarborelui a carui memorie vrem sa o eliberam.
  *  @param free_data: Pointer spre o functie care elibereaza memoria din campul
- * 					  data in cazul unei structuri complexe. NU memoria alocata
- * 					  pentru void *data. Daca se trimite NULL, nu are efect
+ *					  data in cazul unei structuri complexe. NU memoria alocata
+ *					  pentru void *data. Daca se trimite NULL, nu are efect
  */
 void clear_tree(g_tree_node *node, void (*free_data)(void *))
 {
@@ -241,8 +251,6 @@ void clear_tree(g_tree_node *node, void (*free_data)(void *))
 	free(node->data);
 	free(node->children);
 	free(node);
-
-	return;
 }
 
 /** @brief Functia elibereaza toata memoria consumata (de nodurile arborelui,
