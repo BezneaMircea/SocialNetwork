@@ -133,6 +133,4 @@ void delete(g_tree **tree_vector) {
 
 	clear_tree(sub_tree_root, tree_vector[post_id]->free_data);
 	free(node_to_delete_from.data);
-
-	
 }

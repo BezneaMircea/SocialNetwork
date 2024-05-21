@@ -120,18 +120,17 @@ void g_tree_insert(g_tree *tree, void *data) {
 }
 
 static
-void swap_nodes(g_tree_node *node_a, g_tree_node *node_b) {
+void swap_nodes(g_tree_node **node_a, g_tree_node **node_b) {
 	g_tree_node *aux;
-	aux = node_a;
-	node_a = node_b;
-	node_b = aux;
+	aux = *node_a;
+	*node_a = *node_b;
+	*node_b = aux;
 }
-
 
 static
 void remove_kid(g_tree_node *node, int i) {
 	for (int j = i; j < node->nr_children - 1; j++)
-		swap_nodes(node->children[j], node->children[j + 1]);
+		swap_nodes(&node->children[j], &node->children[j + 1]);
 	node->nr_children--;
 	node->children[node->nr_children] = NULL;
 }
