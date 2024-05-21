@@ -23,7 +23,8 @@ struct tree_data
 };
 
 void handle_input_posts(char *input, g_tree **tree_vector);
-void create_post(char *name, char *titlu, g_tree **tree, int id);
-void print_sub_tree(g_tree_node *node, int was_it_a_repost);
+void create_post(g_tree **tree, int id);
+void get_reposts(g_tree **tree_vector);
+void repost(g_tree **tree_vector, int id);
 
 #endif // POSTS_H
