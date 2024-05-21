@@ -10,7 +10,7 @@
 #include "posts.h"
 #include "feed.h"
 
-#define MAX_POSTS_NR 100
+#define MAX_POSTS_NR 300
 /**
  * Initializez every task based on which task we are running
 */
