@@ -19,21 +19,20 @@ void handle_input_friends(list_graph_t *graph, char *input)
 	if (!cmd)
 		return;
 
-	if (!strcmp(cmd, "add")) {
+	if (!strcmp(cmd, "add"))
 		add_friend(graph);
-	} else if (!strcmp(cmd, "remove")) {
+	else if (!strcmp(cmd, "remove"))
 		remove_friend(graph);
-	} else if (!strcmp(cmd, "suggestions")) {
+	else if (!strcmp(cmd, "suggestions"))
 		suggestions_friend(graph);
-	} else if (!strcmp(cmd, "distance")) {
+	else if (!strcmp(cmd, "distance"))
 		distance_friend(graph);
-	} else if (!strcmp(cmd, "common")) {
+	else if (!strcmp(cmd, "common"))
 		common_friends(graph);
-	} else if (!strcmp(cmd, "friends")) {
-        how_many_friends(graph);
-	} else if (!strcmp(cmd, "popular")) {
+	else if (!strcmp(cmd, "friends"))
+		how_many_friends(graph);
+	else if (!strcmp(cmd, "popular"))
 		most_popular(graph);
-	}
 
 	free(commands);
 }

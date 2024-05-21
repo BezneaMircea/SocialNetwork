@@ -15,7 +15,7 @@
  * @param name2: Numele celui de-al doilea utilizator
  */
 void add_friend(list_graph_t *graph) {
-    char *name1 = strtok(NULL, "\n ");
+	char *name1 = strtok(NULL, "\n ");
 	char *name2 = strtok(NULL, "\n ");
 
 	int id_name1 = get_user_id(name1);
@@ -34,7 +34,7 @@ void add_friend(list_graph_t *graph) {
  * @param name2: Numele celui de-al doilea utilizator
  */
 void remove_friend(list_graph_t *graph) {
-    char *name1 = strtok(NULL, "\n ");
+	char *name1 = strtok(NULL, "\n ");
 	char *name2 = strtok(NULL, "\n ");
 
 	int id_name1 = get_user_id(name1);
@@ -53,7 +53,7 @@ void remove_friend(list_graph_t *graph) {
  * @param user: Numele utilizatorului
 */
 void suggestions_friend(list_graph_t *graph) {
-    char *user = strtok(NULL, "\n ");
+	char *user = strtok(NULL, "\n ");
 
 	int id = get_user_id(user);
 	linked_list_t *user_friends = graph->neighbors[id];
@@ -103,7 +103,7 @@ void suggestions_friend(list_graph_t *graph) {
  * @param name2: Numele celui de-al doilea utilizator
 */
 void common_friends(list_graph_t *graph) {
-    char *name1 = strtok(NULL, "\n ");
+	char *name1 = strtok(NULL, "\n ");
 	char *name2 = strtok(NULL, "\n ");
 
 	int id_name1 = get_user_id(name1);
@@ -153,7 +153,7 @@ void common_friends(list_graph_t *graph) {
  * @param name2: Numele celui de-al doilea utilizator
 */
 void distance_friend(list_graph_t *graph) {
-    char *name1 = strtok(NULL, "\n ");
+	char *name1 = strtok(NULL, "\n ");
 	char *name2 = strtok(NULL, "\n ");
 
 	int id_name1 = get_user_id(name1);
@@ -204,7 +204,7 @@ void distance_friend(list_graph_t *graph) {
  * @param user: Numele utilizatorului
  */
 void most_popular(list_graph_t *graph) {
-    char *user = strtok(NULL, "\n ");
+	char *user = strtok(NULL, "\n ");
 	int id = get_user_id(user);
 
 	// numar de conexiuni ale utilizatorului
@@ -246,7 +246,7 @@ void most_popular(list_graph_t *graph) {
 }
 
 void how_many_friends(list_graph_t *graph) {
-    char *name = strtok(NULL, "\n ");
+	char *name = strtok(NULL, "\n ");
 	int id = get_user_id(name);
 	printf("%s has %d friends\n", name, graph->neighbors[id]->size);
 }
