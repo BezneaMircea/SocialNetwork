@@ -6,8 +6,8 @@
 #include "structuri.h"
 #include "posts.h"
 
-int id_increase() {
-	static int id = 0;
+int id_increase(void) {
+	static int id;
 	id++;
 	return id;
 }
@@ -20,7 +20,7 @@ void handle_input_posts(char *input, g_tree **tree_vector)
 	if (!cmd)
 		return;
 
-	if (!strcmp(cmd, "create")) {	
+	if (!strcmp(cmd, "create")) {
 		int id = id_increase();
 		create_post(&tree_vector[id], id);
 	} else if (!strcmp(cmd, "repost")) {
@@ -34,9 +34,9 @@ void handle_input_posts(char *input, g_tree **tree_vector)
 		ratio(tree_vector);
 	} else if (!strcmp(cmd, "delete")) {
 		delete(tree_vector);
-	} else if (!strcmp(cmd, "get-likes"))
+	} else if (!strcmp(cmd, "get-likes")) {
 		get_likes(tree_vector);
-	else if (!strcmp(cmd, "get-reposts")) {
+	} else if (!strcmp(cmd, "get-reposts")) {
 		get_reposts(tree_vector);
 	}
 

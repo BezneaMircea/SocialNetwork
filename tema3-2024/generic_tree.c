@@ -8,7 +8,7 @@
  *  @return Returneaza un nod al arborelui generic
  */
 static g_tree_node *
-g_tree_create_node(void *data, unsigned max_children_nr,
+g_tree_create_node(void *data, unsigned int max_children_nr,
 				   unsigned int data_size)
 {
 	g_tree_node *node = malloc(sizeof(g_tree_node));
@@ -27,12 +27,12 @@ g_tree_create_node(void *data, unsigned max_children_nr,
 
 /** @brief Functia creeaza un arbore generic
  *  @param data_size: Dimensiunea datelor stocate in arbore
- *  @param compare: Pointer spre o functie de comparare a nodurilor din arbore.
- * 					Intoarce 1 daca primul nod este mai mare, 0 daca sunt egale,
- * 					-1 daca al doilea nod este mai mare
+ *  @param compare:	Pointer spre o functie de comparare a nodurilor din arbore.
+ *					Intoarce 1 daca primul nod este mai mare, 0 daca sunt egale,
+ *					-1 daca al doilea nod este mai mare
  *  @param max_children_nr: Numarul maxim de copii ai unui nod
  *  @param free_data: Functie de eliberare a datelor dintr-un nod
- * 					  daca se trimite NULL nu are niciun efect
+ *					  daca se trimite NULL nu are niciun efect
  *  @return Returneaza arborele generic
  */
 g_tree *g_tree_create(unsigned int data_size, int (*compare)(void *, void *),
@@ -55,8 +55,8 @@ g_tree *g_tree_create(unsigned int data_size, int (*compare)(void *, void *),
  *  @param node: Nodul curent
  *  @param node_to_add: Nodul pe care vrem sa il adaugam
  *  @param compare: Pointer spre o functie de comparare a nodurilor din arbore.
- * 					Intoarce 1 daca primul nod este mai mare, 0 daca sunt egale,
- * 					-1 daca al doilea nod este mai mare
+ *					Intoarce 1 daca primul nod este mai mare, 0 daca sunt egale,
+ *					-1 daca al doilea nod este mai mare
  */
 g_tree_node *get_node(g_tree_node *node, g_tree_node *node_to_add,
 					  int (*compare)(void *, void *))
@@ -156,7 +156,8 @@ g_tree_node *destroy_edge(g_tree_node *node, g_tree_node *node_to_remove,
 			return node_to_return;
 		} else if (cmp_res == -1) {
 			/// daca copilul este mai mic decat data
-			node_to_return = destroy_edge(node->children[i], node_to_remove, compare);
+			node_to_return = destroy_edge(node->children[i], node_to_remove,
+										  compare);
 			if (node_to_return)
 				return node_to_return;
 		}
@@ -166,12 +167,12 @@ g_tree_node *destroy_edge(g_tree_node *node, g_tree_node *node_to_remove,
 }
 
 /** @brief Functia distruge legatura dintre parintele ce contine nodul
- * 		   cu informatia data si acesta. Facand ca parintele sa pointeze
- * 		   spre NULL
+ *		   cu informatia data si acesta. Facand ca parintele sa pointeze
+ *		   spre NULL
  *  @param tree: Arborele in care vrem sa distrugem legatura
  *  @param data_to_remove: Nodul pe care vrem sa il eliminam din arbore
  *  @return Functia intoarce nodul ce contine informatia data. Cel care
- * 			a fost eliminat din arbore.
+ *			a fost eliminat din arbore.
  */
 g_tree_node *remove_g_subtree(g_tree *tree, g_tree_node *node_to_remove) {
 	if (!tree)
@@ -179,7 +180,7 @@ g_tree_node *remove_g_subtree(g_tree *tree, g_tree_node *node_to_remove) {
 
 	if (!tree->root)
 		return NULL;
-	
+
 	g_tree_node *node_to_return = tree->root;
 
 	if (!tree->compare(tree->root, node_to_remove)) {
@@ -192,11 +193,11 @@ g_tree_node *remove_g_subtree(g_tree *tree, g_tree_node *node_to_remove) {
 }
 
 /** @brief Functia elibereaza memoria consumata de tot subarborele care pleaca
- * 		   de la node;
+ *		   de la node;
  *  @param node: radacina subarborelui a carui memorie vrem sa o eliberam.
  *  @param free_data: Pointer spre o functie care elibereaza memoria din campul
- * 					  data in cazul unei structuri complexe. NU memoria alocata
- * 					  pentru void *data. Daca se trimite NULL, nu are efect
+ *					  data in cazul unei structuri complexe. NU memoria alocata
+ *					  pentru void *data. Daca se trimite NULL, nu are efect
  */
 void clear_tree(g_tree_node *node, void (*free_data)(void *))
 {
@@ -211,8 +212,6 @@ void clear_tree(g_tree_node *node, void (*free_data)(void *))
 	free(node->data);
 	free(node->children);
 	free(node);
-
-	return;
 }
 
 /** @brief Functia elibereaza toata memoria consumata (de nodurile arborelui,
@@ -226,107 +225,4 @@ void purge_g_tree(g_tree **tree)
 	free(tree_to_remove);
 
 	*tree = NULL;
-}
-
-static
-void bfs (g_tree_node *node, g_tree_node **parent, int *vizitat, int *dist) {
-	dist[((tree_data *)(node->data))->id] = 0;
-	vizitat[((tree_data *)(node->data))->id] = 1;
-
-	queue_t *queue = q_create(sizeof(g_tree_node *), MAX_PEOPLE);
-	q_enqueue(queue, &node);
-
-	while(!q_is_empty(queue)) {
-		g_tree_node *current_node = *(g_tree_node **)q_front(queue);
-		q_dequeue(queue);
-
-		for (int i = 0; i < current_node->nr_children; i++) {
-			if (!vizitat[((tree_data *)(current_node->children[i]->data))->id]) {
-				vizitat[((tree_data *)(current_node->children[i]->data))->id] = 1;
-				dist[((tree_data *)(current_node->children[i]->data))->id] = dist[((tree_data *)(current_node->data))->id] + 1;
-				parent[((tree_data *)(current_node->children[i]->data))->id] = current_node;
-				q_enqueue(queue, &current_node->children[i]);
-			}
-		}
-	}
-
-	q_free(queue);
-	free(queue);
-}
-
-static
-g_tree_node *get_that_ancestor(g_tree *tree, g_tree_node *node1,
-							   g_tree_node *node2, g_tree_node **parent,
-							   int *dist)
-{
-	int dist1 = dist[((tree_data *)(node1->data))->id];
-	int dist2 = dist[((tree_data *)(node2->data))->id];
-
-	if (dist1 > dist2) {
-		int d = dist1 - dist2;
-		while (d > 0) {
-			node1 = parent[((tree_data *)(node1->data))->id];
-			d--;
-		}
-	} else {
-		int d = dist2 - dist1;
-		while (d > 0) {
-			node2 = parent[((tree_data *)(node2->data))->id];
-			d--;
-		}
-	}
-
-	if (node1 == node2)
-		return node1;
-
-	if (tree->root == node1 || tree->root == node2)
-			return tree->root;
-
-	while (parent[((tree_data *)(node1->data))->id] != parent[((tree_data *)(node2->data))->id]) {
-		if (tree->root == node1 || tree->root == node2)
-			return tree->root;
-		node1 = parent[((tree_data *)(node1->data))->id];
-		node2 = parent[((tree_data *)(node2->data))->id];
-	}
-	return parent[((tree_data *)(node1->data))->id];
-}
-
-g_tree_node *least_comm_ancestor(g_tree *tree, g_tree_node *node1,
-								 g_tree_node *node2)
-{
-	if (!tree) {
-		printf("Create a tree first\n");
-		return NULL;
-	}
-
-	if (!node1 || !node2) {
-		printf("Ancestor for NULL? Really?\n");
-		return NULL;
-	}
-
-	if (!tree->root) {
-		printf("Dude... Tree is empty, stop trying\n");
-		return NULL;
-	}
-
-	if (!tree->root->nr_children) {
-		printf("I have no kids!!!\n");
-		return NULL;
-	}
-
-	if (tree->root == node1 || tree->root == node2)
-		return tree->root;
-
-	g_tree_node **parent = malloc(MAX_PEOPLE * sizeof(g_tree_node *));
-	int *vizitat = calloc(MAX_PEOPLE, sizeof(int));
-	int *dist = calloc(MAX_PEOPLE, sizeof(int));
-	bfs(tree->root, parent, vizitat, dist);
-
-	g_tree_node *ancestor = get_that_ancestor(tree, node1, node2, parent, dist);
-	
-	free(parent);
-	free(vizitat);
-	free(dist);
-	
-	return ancestor;	
 }

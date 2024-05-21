@@ -17,8 +17,8 @@ struct tree_data
 {
 	unsigned int id, user_id, parrent_id;
 	int nr_likes;
-    char *post_name;
-    int *likes;
+	char *post_name;
+	int *likes;
 };
 
 void handle_input_posts(char *input, g_tree **tree_vector);

@@ -49,7 +49,7 @@ void remove_friend(list_graph_t *graph, char *name1, char *name2) {
 void suggestions_friend(list_graph_t *graph, char *user) {
 	int id = get_user_id(user);
 	linked_list_t *user_friends = graph->neighbors[id];
-	
+
 	int nr_suggestions = 0;
 	int *suggestions = calloc(MAX_PEOPLE, sizeof(int));
 
@@ -76,12 +76,11 @@ void suggestions_friend(list_graph_t *graph, char *user) {
 		friend = friend->next;
 	}
 
-
 	if (nr_suggestions == 0) {
 		printf("There are no suggestions for %s:\n", user);
 	} else {
 		printf("Suggestions for %s:\n", user);
-		
+
 		for (int i = 0; i < MAX_PEOPLE; i++) {
 			if (suggestions[i] != 0)
 				printf("%s\n", get_user_name(i));
@@ -136,7 +135,6 @@ void common_friends(list_graph_t *graph, char *name1, char *name2) {
 
 	free(common_friends);
 }
-
 
 /**
  * @brief Functia afiseaza distanta dintre doi utilizatori

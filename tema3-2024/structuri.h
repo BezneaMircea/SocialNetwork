@@ -132,7 +132,6 @@ int lg_has_edge(list_graph_t *graph, int src, int dest);
 void lg_add_edge(list_graph_t *graph, int src, int dest);
 list_graph_t *lg_create(int nodes);
 
-
 ///
 ///
 /// Generic Tree
@@ -141,23 +140,23 @@ list_graph_t *lg_create(int nodes);
 typedef struct g_tree_node g_tree_node;
 struct g_tree_node
 {
-    void *data;
-    g_tree_node **children;
-    int nr_children;
+	void *data;
+	g_tree_node **children;
+	int nr_children;
 };
 
 typedef struct g_tree g_tree;
 struct g_tree
 {
-    g_tree_node *root;
-    unsigned int data_size;
-    unsigned int max_children_nr;
-    int (*compare)(void *, void *);
-    void (*free_data)(void *);
+	g_tree_node *root;
+	unsigned int data_size;
+	unsigned int max_children_nr;
+	int (*compare)(void *a, void *b);
+	void (*free_data)(void *a);
 };
 
 g_tree *g_tree_create(unsigned int data_size, int (*compare)(void *, void *),
-                      unsigned int max_children_nr, void (*free_data)(void *));
+					  unsigned int max_children_nr, void (*free_data)(void *));
 void g_tree_insert(g_tree *tree, void *data);
 g_tree_node *remove_g_subtree(g_tree *tree, g_tree_node *node_to_remove);
 void purge_g_tree(g_tree **tree);
