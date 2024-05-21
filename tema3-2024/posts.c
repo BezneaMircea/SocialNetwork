@@ -6,12 +6,20 @@
 #include "structuri.h"
 #include "posts.h"
 
+/** @brief Functie folosita pentru a incrementa si a intoarce id-ul
+ *  @return Intoarce id-ul
+ */
 int id_increase(void) {
 	static int id;
 	id++;
 	return id;
 }
 
+/** @brief Functia verifica ce comanda avem si ne redirectioneaza spre
+ * 		   o alta functie specifica cerintei curente
+ *  @param input: Comanda
+ *  @param tree_vector: Vectorul de copaci
+ */
 void handle_input_posts(char *input, g_tree **tree_vector)
 {
 	char *commands = strdup(input);

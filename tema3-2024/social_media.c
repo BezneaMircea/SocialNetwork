@@ -41,6 +41,8 @@ int main(void)
 
 	list_graph_t *graph = lg_create(MAX_PEOPLE);
 	g_tree **tree_vector = malloc(MAX_POSTS_NR * sizeof(g_tree *));
+	DIE(!tree_vector, "Eroare la alocare\n");
+
 	for (int i = 0; i < MAX_POSTS_NR; i++)
 		tree_vector[i] = NULL;
 	/// VEZI CA AI LASAT 100 aici

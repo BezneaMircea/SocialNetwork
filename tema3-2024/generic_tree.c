@@ -60,14 +60,9 @@ g_tree *g_tree_create(unsigned int data_size, int (*compare)(void *, void *),
  * 						astfel incat functia compare sa il poata recunoaste in
  * 						arbore
  *  @param compare: Pointer spre o functie de comparare a nodurilor din arbore.
-<<<<<<< HEAD
  * 					Intoarce 1 daca primul nod este mai mare, 0 daca sunt egale,
  * 					-1 daca al doilea nod este mai mare
  *  @return Returneaza nodul corespunzator, conform functiei compare
-=======
- *					Intoarce 1 daca primul nod este mai mare, 0 daca sunt egale,
- *					-1 daca al doilea nod este mai mare
->>>>>>> e55d7f5ab33a126fab60b8c1d87289b65ab089ab
  */
 g_tree_node *get_node(g_tree_node *node, g_tree_node *node_to_get,
 					  int (*compare)(void *, void *))
@@ -206,12 +201,8 @@ g_tree_node *destroy_edge(g_tree_node *node, g_tree_node *node_to_remove,
  *  @param tree: Arborele in care vrem sa distrugem legatura
  *  @param data_to_remove: Nodul pe care vrem sa il eliminam din arbore
  *  @return Functia intoarce nodul ce contine informatia data. Cel care
-<<<<<<< HEAD
  * 			a fost eliminat din arbore. Practic radacina subarborelui
  * 			eliminat
-=======
- *			a fost eliminat din arbore.
->>>>>>> e55d7f5ab33a126fab60b8c1d87289b65ab089ab
  */
 g_tree_node *remove_g_subtree(g_tree *tree, g_tree_node *node_to_remove) {
 	if (!tree)

@@ -47,8 +47,11 @@ void create_post(g_tree **tree, int id) {
 	data_to_insert.parrent_id = 0;
 	data_to_insert.nr_likes = 0;
 	data_to_insert.likes = (int *)calloc(MAX_PEOPLE, sizeof(int));
+	DIE(!data_to_insert.likes, "Eroare la alocare\n");
 
 	data_to_insert.post_name = (char *)malloc(MAX_TITLE_LEN);
+	DIE(!data_to_insert.post_name, "Eroare la alocare\n");
+
     strncpy(data_to_insert.post_name, title, MAX_TITLE_LEN);	
 
 	g_tree_insert(*tree, &data_to_insert);
@@ -72,6 +75,7 @@ void repost(g_tree **tree_vector, int id) {
 	data_to_add.id = id;
 	data_to_add.nr_likes = 0;
 	data_to_add.likes = (int *)calloc(MAX_PEOPLE, sizeof(int));
+	DIE(!data_to_add.likes, "Eroare la alocare\n");
 	data_to_add.post_name = NULL;
 	data_to_add.parrent_id = post_id;
 
@@ -115,6 +119,8 @@ void like(g_tree **tree_vector) {
 
 	g_tree_node look_for_node_to_like;
 	look_for_node_to_like.data = malloc(sizeof(tree_data));
+	DIE(!look_for_node_to_like.data, "Eroare la alocare\n");
+
 	((tree_data *)(look_for_node_to_like.data))->parrent_id = post_id;
 
 	int repost_id;
@@ -160,6 +166,8 @@ void get_likes(g_tree **tree_vector) {
 
 	g_tree_node look_for_node_likes;
 	look_for_node_likes.data = malloc(sizeof(tree_data));
+	DIE(!look_for_node_likes.data, "Eroare la alocare\n");
+
 	((tree_data *)(look_for_node_likes.data))->parrent_id = post_id;
 
 	int repost_id;
@@ -194,6 +202,8 @@ void get_reposts(g_tree **tree_vector) {
 
 	g_tree_node node_to_get_repost_from;
 	node_to_get_repost_from.data = malloc(sizeof(tree_data));
+	DIE(!node_to_get_repost_from.data, "Eroare la alocare\n");
+
 	((tree_data *)(node_to_get_repost_from.data))->parrent_id = post_id;
 
 	int repost_id;
@@ -222,6 +232,8 @@ void delete(g_tree **tree_vector) {
 
 	g_tree_node node_to_delete_from;
 	node_to_delete_from.data = malloc(sizeof(tree_data));
+	DIE(!node_to_delete_from.data, "Eroare la alocare\n");
+
 	((tree_data *)(node_to_delete_from.data))->parrent_id = post_id;
 
 	int repost_id;
@@ -365,8 +377,14 @@ g_tree_node *least_comm_ancestor(g_tree *tree, g_tree_node *node1,
 		return tree->root;
 
 	g_tree_node **parent = malloc(MAX_PEOPLE * sizeof(g_tree_node *));
+	DIE(!parent, "Eroare la alocare\n");
+
 	int *vizitat = calloc(MAX_PEOPLE, sizeof(int));
+	DIE(!vizitat, "Eroare la alocare\n");
+
 	int *dist = calloc(MAX_PEOPLE, sizeof(int));
+	DIE(!dist, "Eroare la alocare\n");
+
 	bfs(tree->root, parent, vizitat, dist);
 
 	g_tree_node *ancestor = get_that_ancestor(tree, node1, node2, parent, dist);
@@ -387,10 +405,14 @@ void common_repost(g_tree **tree_vector) {
 
 	g_tree_node find_node1;
 	find_node1.data = malloc(sizeof(tree_data));
+	DIE(!find_node1.data, "Eroare la alocare\n");
+
 	((tree_data *)(find_node1.data))->parrent_id = repost_id1;
 
 	g_tree_node find_node2;
 	find_node2.data = malloc(sizeof(tree_data));
+	DIE(!find_node1.data, "Eroare la alocare\n");
+
 	((tree_data *)(find_node2.data))->parrent_id = repost_id2;
 
 	g_tree_node *node1 = get_node(tree->root, &find_node1, tree->compare);
