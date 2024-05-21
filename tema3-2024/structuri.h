@@ -138,6 +138,11 @@ list_graph_t *lg_create(int nodes);
 /// Generic Tree
 ///
 ///
+
+/** @param data: pointer spre datele unui nod
+ *  @param nr_childred: nr de copii ai nodului
+ *  @param children: vector pointeri spre copii
+ */
 typedef struct g_tree_node g_tree_node;
 struct g_tree_node
 {
@@ -146,6 +151,15 @@ struct g_tree_node
     int nr_children;
 };
 
+/** @param root: Radacina copacului
+ *  @param data_size: Dimensiunea datelor tinute intr-un nod
+ *  @param max_children_nr: Nr maxim de copii ai unui nod
+ *  @param compare: Pointer spre o functie de comparare intre noduri
+ *                  intoarce 0 la egalitate. 1 daca primul nod e mai mare
+ *                  -1 daca al doilea e mai mare. NU E NEAP CA FUNCTIA SA
+ *                  fie comutativa.
+ *  @param free_data Pointer spre o functie de elibarare a datelor dintr-un nod
+ */
 typedef struct g_tree g_tree;
 struct g_tree
 {
@@ -164,7 +178,5 @@ void purge_g_tree(g_tree **tree);
 void clear_tree(g_tree_node *node, void (*free_data)(void *));
 g_tree_node *get_node(g_tree_node *node, g_tree_node *node_to_add,
 					  int (*compare)(void *, void *));
-g_tree_node *least_comm_ancestor(g_tree *tree, g_tree_node *node1,
-								 g_tree_node *node2);
 
 #endif

@@ -6,6 +6,11 @@
 #include "structuri.h"
 #include "users.h"
 
+/** @brief Aceasta functie face parsarea datelor pentru Task1
+ *         si apeleaza functiile corespunzatoare acestora
+ *  @param graph: Graful pe care vom executa comanda
+ *  @param input: Comanda efectiva.
+ */
 void handle_input_friends(list_graph_t *graph, char *input)
 {
 	char *commands = strdup(input);

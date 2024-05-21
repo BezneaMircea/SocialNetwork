@@ -1,10 +1,21 @@
 #include "posts.h"
 
+/** @brief Functie trimisa ca parametru folosita pentru eliberarea
+ * 		   memoriei consumata de ce se afla in void *data intr-un nod din arbore
+ * 	@param data: Pointer spre void *data ce trebuie eliberat
+ */
 void free_data(void *data) {
 	free(((tree_data *)data)->post_name);
 	free(((tree_data *)data)->likes);
 }
 
+/** @brief Functia de comparare intre doua noduri. Necomutativa. Daca primul
+ * 		   nod este parintele celui de al doilea returnam 0. Daca este mai mare
+ * 		   intoarcem 1 daca este mai mic -1
+ *  @param data_a: Nodul parinte
+ *  @param data_b: Nodul copil
+ *  @return 0 le egalitate 1 daca data_a > data_b si -1 daca data_a < data_b
+ */
 int compare(void *data_a, void *data_b) {
 	int node_id = ((tree_data *)(((g_tree_node *)data_a)->data))->id; /// id-ul
 	int dad_id = ((tree_data *)(((g_tree_node *)data_b)->data))->parrent_id; /// id-ul lui tata
@@ -18,6 +29,11 @@ int compare(void *data_a, void *data_b) {
 	return 0;
 }
 
+/** @brief Functia creeaza o postare cu id-ul id in vectorul de copaci
+ * 		   De asemenea, in aceasta functie facem si parsarea inputului
+ *  @param tree: Vectorul de copaci.
+ *  @param id: Id-ul postarii pe care vrem sa o facem postarea.
+ */
 void create_post(g_tree **tree, int id) {
 
 	char *name = strtok(NULL, "\n ");
@@ -35,12 +51,15 @@ void create_post(g_tree **tree, int id) {
 	data_to_insert.post_name = (char *)malloc(MAX_TITLE_LEN);
     strncpy(data_to_insert.post_name, title, MAX_TITLE_LEN);	
 
-	/// add more shit if needed
 	g_tree_insert(*tree, &data_to_insert);
 
 	printf("Created %s for %s\n", title, name);
 }
 
+/** @brief Functia creeaza un repost. Se ocupa si cu parsarea
+ *  @param tree_vector: Vectorul de copaci
+ *  @param id: Id-ul repostului pe care vrem sa il facem
+ */ 
 void repost(g_tree **tree_vector, int id) {
 	char *name = strtok(NULL, "\n ");
 	int post_id = atoi(strtok(NULL, "\n "));
@@ -65,6 +84,10 @@ void repost(g_tree **tree_vector, int id) {
 	printf("Created repost #%d for %s\n", data_to_add.id, name);
 }
 
+/** @brief Functia printeaza subarborele cu radacina nod. In formatul cerut
+ *  @param node: radacina subarborelui
+ *  @param was_it_a_repost: 1 daca a fost repost, 0 daca a fost post
+ */
 void print_sub_tree(g_tree_node *node, int was_it_a_repost) {
 	if (!node)
 		return;
@@ -80,7 +103,11 @@ void print_sub_tree(g_tree_node *node, int was_it_a_repost) {
 		print_sub_tree(node->children[i], 1);
 }
 
-void like (g_tree **tree_vector) {
+
+/** @brief Functia faca parsarea datelor si da un like corespunzator.
+ *  @param tree_data: Vectorul de copaci
+ */
+void like(g_tree **tree_vector) {
 	char *name = strtok(NULL, "\n ");
 	int post_id = atoi(strtok(NULL, "\n "));
 	char *repost_id_string = strtok(NULL, "\n ");
@@ -124,7 +151,10 @@ void like (g_tree **tree_vector) {
 	free(look_for_node_to_like.data);
 }
 
-void get_likes (g_tree **tree_vector) {
+/** @brief Functia face parsarea datelor si afiseaza nr de likeuri
+ *  @param tree_vector: Vectorul de copaci 
+ */
+void get_likes(g_tree **tree_vector) {
 	int post_id = atoi(strtok(NULL, "\n "));
 	char *repost_id_string = strtok(NULL, "\n ");
 
@@ -155,7 +185,10 @@ void get_likes (g_tree **tree_vector) {
 	free(look_for_node_likes.data);
 }
 
-void get_reposts (g_tree **tree_vector) {
+/** @brief Functia afiseaza ierarhia de reposturi si face parsarea comenzii
+ *  @param tree_vector: Vectorul de copaci
+ */
+void get_reposts(g_tree **tree_vector) {
 	int post_id = atoi(strtok(NULL, "\n "));
 	char *repost_id_string = strtok(NULL, "\n ");
 
@@ -179,6 +212,10 @@ void get_reposts (g_tree **tree_vector) {
 	print_sub_tree(sub_tree_root, was_it_a_repost);
 }
 
+
+/** @brief Functia sterge toata ierarhia de postari/repostari si face parsarea
+ *  @param tree_vector: Vectorul de copaci
+ */
 void delete(g_tree **tree_vector) {
 	int post_id = atoi(strtok(NULL, "\n "));
 	char *repost_id_string = strtok(NULL, "\n ");
@@ -209,6 +246,9 @@ void delete(g_tree **tree_vector) {
 	free(node_to_delete_from.data);
 }
 
+/** @brief Face ratio-ul si parsarea
+ *  @param tree_vector: Vectorul de copaci
+ */
 void ratio(g_tree **tree_vector) {
 	int post_id = atoi(strtok(NULL, "\n "));
 
