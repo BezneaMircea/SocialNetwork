@@ -32,8 +32,7 @@ void handle_input_posts(char *input, g_tree **tree_vector)
 		(void)cmd;
 		// TODO: Add function
 	else if (!strcmp(cmd, "like"))
-		(void)cmd;
-		// TODO: Add function
+		like(tree_vector);
 	else if (!strcmp(cmd, "ratio"))
 		(void)cmd;
 		// TODO: Add function
@@ -41,8 +40,7 @@ void handle_input_posts(char *input, g_tree **tree_vector)
 		delete(tree_vector);
 	}
 	else if (!strcmp(cmd, "get-likes"))
-		(void)cmd;
-		// TODO: Add function
+		get_likes(tree_vector);
 	else if (!strcmp(cmd, "get-reposts")) {
 		get_reposts(tree_vector);
 	}
