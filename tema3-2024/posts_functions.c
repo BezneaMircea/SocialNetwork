@@ -286,6 +286,13 @@ void ratio(g_tree **tree_vector) {
 	}
 }
 
+/** @brief Fac un BFS, calculez distanta de la radacina la fiecare nod si creez
+ *		   un vector de parinti
+ *  @param node: Radacina arborelui
+ *  @param parent: Vector de parinti
+ *  @param vizitat: Vector de vizitat
+ *  @param dist: Vector de distante (nivelul fiecarui nod in arbore)
+ */
 static
 void bfs(g_tree_node *node, g_tree_node **parent, int *vizitat, int *dist) {
 	dist[((tree_data *)(node->data))->id] = 0;
@@ -312,6 +319,14 @@ void bfs(g_tree_node *node, g_tree_node **parent, int *vizitat, int *dist) {
 	free(queue);
 }
 
+/** @brief Functia calculeaza cel mai apropiat stramos comun
+ *  @param tree: Arborele
+ *  @param node1: Nodul 1
+ *  @param node2: Nodul 2
+ *  @param parent: Vector de parinti
+ *  @param dist: Vector de distante
+ *  @return Returneaza nodul care este stramos comun
+ */
 static
 g_tree_node *get_that_ancestor(g_tree *tree, g_tree_node *node1,
 							   g_tree_node *node2, g_tree_node **parent,
@@ -349,6 +364,13 @@ g_tree_node *get_that_ancestor(g_tree *tree, g_tree_node *node1,
 	return parent[((tree_data *)(node1->data))->id];
 }
 
+/** @brief Functia apeleaza bfs-ul si get_that_ancestor pentru a gasi cel mai 
+ *		   apropiat stramos comun
+ *  @param tree: Arborele
+ *  @param node1: Nodul 1
+ *  @param node2: Nodul 2
+ *  @return Returneaza nodul care este stramos comun
+ */
 static 
 g_tree_node *least_comm_ancestor(g_tree *tree, g_tree_node *node1,
 								 g_tree_node *node2)
@@ -396,6 +418,9 @@ g_tree_node *least_comm_ancestor(g_tree *tree, g_tree_node *node1,
 	return ancestor;	
 }
 
+/** @brief Functia imi gaseste primul repost comun al doua reposturi
+ *  @param tree_vector: Vectorul de copaci
+ */
 void common_repost(g_tree **tree_vector) {
 	int post_id = atoi(strtok(NULL, "\n "));
 	int repost_id1 = atoi(strtok(NULL, "\n "));
