@@ -9,6 +9,7 @@
 /** @brief Functie folosita pentru a incrementa si a intoarce id-ul
  *  @return Intoarce id-ul
  */
+static
 int id_increase(void) {
 	static int id;
 	id++;

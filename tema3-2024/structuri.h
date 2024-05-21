@@ -119,10 +119,12 @@ stack_t *init_stack(unsigned int data_size);
 /** @param neighbors: Vector de pointeri spre listele de vecini
  *  @param nodes: Nr de noduri din graf
  */
-typedef struct {
+typedef struct list_graph_t list_graph_t;
+struct list_graph_t
+{
 	int nodes;
 	linked_list_t **neighbors;
-} list_graph_t;
+};
 
 void purge_graph(list_graph_t **graph);
 void lg_print_graph(list_graph_t *graph);

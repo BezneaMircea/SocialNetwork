@@ -1,9 +1,6 @@
 #ifndef FRIENDS_H
 #define FRIENDS_H
 
-#define MAX_COMMAND_LEN 500
-#define MAX_PEOPLE 550
-
 #include "structuri.h"
 
 /**
@@ -11,7 +8,7 @@
  *
  * Please add any necessary parameters to the functions
 */
-void handle_input_friends(list_graph_t *graph, char *input);
+void handle_input_friends(char *input, list_graph_t *graph);
 
 void add_friend(list_graph_t *graph);
 

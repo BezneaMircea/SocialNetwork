@@ -10,6 +10,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define MAX_CHILD_NR 100
+#define MAX_TITLE_LEN 280
+#define MAX_POSTS_NR 300
+#define MAX_COMMAND_LEN 500
+#define MAX_PEOPLE 550
+#define MAX_QUEUE_SIZE 900
+
 #define DIE(assertion, call_description)                                      \
 	do {                                                                      \
 		if (assertion) {                                                      \

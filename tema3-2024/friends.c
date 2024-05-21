@@ -11,7 +11,7 @@
  *  @param graph: Graful pe care vom executa comanda
  *  @param input: Comanda efectiva.
  */
-void handle_input_friends(list_graph_t *graph, char *input)
+void handle_input_friends(char *input, list_graph_t *graph)
 {
 	char *commands = strdup(input);
 	char *cmd = strtok(commands, "\n ");

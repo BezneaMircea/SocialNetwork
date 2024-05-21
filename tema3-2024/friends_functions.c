@@ -165,7 +165,7 @@ void distance_friend(list_graph_t *graph) {
 	for (int i = 0; i < graph->nodes; i++)
 		dist[i] = -1;
 
-	queue_t *queue = q_create(sizeof(int), graph->nodes);
+	queue_t *queue = q_create(sizeof(int), MAX_QUEUE_SIZE);
 	q_enqueue(queue, &id_name1);
 	vizitat[id_name1] = 1;
 	dist[id_name1] = 0;

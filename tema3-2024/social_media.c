@@ -10,7 +10,6 @@
 #include "posts.h"
 #include "feed.h"
 
-#define MAX_POSTS_NR 300
 /**
  * Initializez every task based on which task we are running
 */
@@ -45,7 +44,6 @@ int main(void)
 
 	for (int i = 0; i < MAX_POSTS_NR; i++)
 		tree_vector[i] = NULL;
-	/// VEZI CA AI LASAT 100 aici
 
 	while (1) {
 		char *command = fgets(input, MAX_COMMAND_LEN, stdin);
@@ -55,7 +53,7 @@ int main(void)
 			break;
 
 		#ifdef TASK_1
-		handle_input_friends(graph, input);
+		handle_input_friends(input, graph);
 		#endif
 
 		#ifdef TASK_2
@@ -63,7 +61,7 @@ int main(void)
 		#endif
 
 		#ifdef TASK_3
-		handle_input_feed(input);
+		handle_input_feed(input, tree_vector, graph);
 		#endif
 	}
 
