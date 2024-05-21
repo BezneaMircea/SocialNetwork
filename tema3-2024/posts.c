@@ -16,7 +16,7 @@ int id_increase(void) {
 }
 
 /** @brief Functia verifica ce comanda avem si ne redirectioneaza spre
- * 		   o alta functie specifica cerintei curente
+ *		   o alta functie specifica cerintei curente
  *  @param input: Comanda
  *  @param tree_vector: Vectorul de copaci
  */

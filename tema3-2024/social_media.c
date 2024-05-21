@@ -47,7 +47,6 @@ int main(void)
 		tree_vector[i] = NULL;
 	/// VEZI CA AI LASAT 100 aici
 
-	
 	while (1) {
 		char *command = fgets(input, MAX_COMMAND_LEN, stdin);
 

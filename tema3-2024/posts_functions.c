@@ -1,8 +1,8 @@
 #include "posts.h"
 
 /** @brief Functie trimisa ca parametru folosita pentru eliberarea
- * 		   memoriei consumata de ce se afla in void *data intr-un nod din arbore
- * 	@param data: Pointer spre void *data ce trebuie eliberat
+ *		   memoriei consumata de ce se afla in void *data intr-un nod din arbore
+ *	@param data: Pointer spre void *data ce trebuie eliberat
  */
 void free_data(void *data) {
 	free(((tree_data *)data)->post_name);
@@ -10,15 +10,17 @@ void free_data(void *data) {
 }
 
 /** @brief Functia de comparare intre doua noduri. Necomutativa. Daca primul
- * 		   nod este parintele celui de al doilea returnam 0. Daca este mai mare
- * 		   intoarcem 1 daca este mai mic -1
+ *		   nod este parintele celui de al doilea returnam 0. Daca este mai mare
+ *		   intoarcem 1 daca este mai mic -1
  *  @param data_a: Nodul parinte
  *  @param data_b: Nodul copil
  *  @return 0 le egalitate 1 daca data_a > data_b si -1 daca data_a < data_b
  */
 int compare(void *data_a, void *data_b) {
-	int node_id = ((tree_data *)(((g_tree_node *)data_a)->data))->id; /// id-ul
-	int dad_id = ((tree_data *)(((g_tree_node *)data_b)->data))->parrent_id; /// id-ul lui tata
+	/// id-ul nodului
+	int node_id = ((tree_data *)(((g_tree_node *)data_a)->data))->id;
+	/// id-ul lui tata
+	int dad_id = ((tree_data *)(((g_tree_node *)data_b)->data))->parrent_id;
 
 	if (node_id > dad_id)
 		return 1;
@@ -30,12 +32,11 @@ int compare(void *data_a, void *data_b) {
 }
 
 /** @brief Functia creeaza o postare cu id-ul id in vectorul de copaci
- * 		   De asemenea, in aceasta functie facem si parsarea inputului
+ *		   De asemenea, in aceasta functie facem si parsarea inputului
  *  @param tree: Vectorul de copaci.
  *  @param id: Id-ul postarii pe care vrem sa o facem postarea.
  */
 void create_post(g_tree **tree, int id) {
-
 	char *name = strtok(NULL, "\n ");
 	char *title = strtok(NULL, "\n");
 	*tree = g_tree_create(sizeof(tree_data), compare, MAX_CHILD_NR, free_data);
@@ -52,7 +53,7 @@ void create_post(g_tree **tree, int id) {
 	data_to_insert.post_name = (char *)malloc(MAX_TITLE_LEN);
 	DIE(!data_to_insert.post_name, "Eroare la alocare\n");
 
-    strncpy(data_to_insert.post_name, title, MAX_TITLE_LEN);	
+	strncpy(data_to_insert.post_name, title, MAX_TITLE_LEN);
 
 	g_tree_insert(*tree, &data_to_insert);
 
@@ -62,7 +63,7 @@ void create_post(g_tree **tree, int id) {
 /** @brief Functia creeaza un repost. Se ocupa si cu parsarea
  *  @param tree_vector: Vectorul de copaci
  *  @param id: Id-ul repostului pe care vrem sa il facem
- */ 
+ */
 void repost(g_tree **tree_vector, int id) {
 	char *name = strtok(NULL, "\n ");
 	int post_id = atoi(strtok(NULL, "\n "));
@@ -107,7 +108,6 @@ void print_sub_tree(g_tree_node *node, int was_it_a_repost) {
 		print_sub_tree(node->children[i], 1);
 }
 
-
 /** @brief Functia faca parsarea datelor si da un like corespunzator.
  *  @param tree_data: Vectorul de copaci
  */
@@ -115,7 +115,6 @@ void like(g_tree **tree_vector) {
 	char *name = strtok(NULL, "\n ");
 	int post_id = atoi(strtok(NULL, "\n "));
 	char *repost_id_string = strtok(NULL, "\n ");
-
 
 	g_tree_node look_for_node_to_like;
 	look_for_node_to_like.data = malloc(sizeof(tree_data));
@@ -136,9 +135,10 @@ void like(g_tree **tree_vector) {
 										tree_vector[post_id]->compare);
 
 	unsigned int like_user_id = get_user_id(name);
-	char *post_name = ((tree_data *)(tree_vector[post_id]->root->data))->post_name;
+	char *post_name = ((tree_data *)
+					   (tree_vector[post_id]->root->data))->post_name;
 
-	if (((tree_data *)(node_to_like->data))->likes[like_user_id] == 0) {
+	if (((tree_data *)node_to_like->data)->likes[like_user_id] == 0) {
 		((tree_data *)(node_to_like->data))->nr_likes++;
 		((tree_data *)(node_to_like->data))->likes[like_user_id] = 1;
 		if (was_it_a_repost)
@@ -153,12 +153,12 @@ void like(g_tree **tree_vector) {
 		else
 			printf("User %s unliked post %s\n", name, post_name);
 	}
-	
+
 	free(look_for_node_to_like.data);
 }
 
 /** @brief Functia face parsarea datelor si afiseaza nr de likeuri
- *  @param tree_vector: Vectorul de copaci 
+ *  @param tree_vector: Vectorul de copaci
  */
 void get_likes(g_tree **tree_vector) {
 	int post_id = atoi(strtok(NULL, "\n "));
@@ -181,7 +181,7 @@ void get_likes(g_tree **tree_vector) {
 	g_tree_node *node_likes = get_node(tree_vector[post_id]->root,
 									   &look_for_node_likes,
 									   tree_vector[post_id]->compare);
-	
+
 	if (was_it_a_repost)
 		printf("Repost #%d has %d likes\n", repost_id,
 			   ((tree_data *)(node_likes->data))->nr_likes);
@@ -189,7 +189,7 @@ void get_likes(g_tree **tree_vector) {
 		printf("Post %s has %d likes\n",
 			   ((tree_data *)(node_likes->data))->post_name,
 			   ((tree_data *)(node_likes->data))->nr_likes);
-	
+
 	free(look_for_node_likes.data);
 }
 
@@ -222,7 +222,6 @@ void get_reposts(g_tree **tree_vector) {
 	print_sub_tree(sub_tree_root, was_it_a_repost);
 }
 
-
 /** @brief Functia sterge toata ierarhia de postari/repostari si face parsarea
  *  @param tree_vector: Vectorul de copaci
  */
@@ -245,7 +244,7 @@ void delete(g_tree **tree_vector) {
 	}
 
 	g_tree_node *sub_tree_root = remove_g_subtree(tree_vector[post_id],
-										  		  &node_to_delete_from);
+												  &node_to_delete_from);
 
 	if (was_it_a_repost) {
 		printf("Deleted repost #%d of post %s\n", repost_id,
@@ -277,7 +276,7 @@ void ratio(g_tree **tree_vector) {
 		if (cur_likes > max_likes)
 			post_that_ratioed = cur_id;
 	}
-	
+
 	if (post_that_ratioed == og_post_id) {
 		printf("The original post is the highest rated\n");
 	} else {
@@ -301,15 +300,18 @@ void bfs(g_tree_node *node, g_tree_node **parent, int *vizitat, int *dist) {
 	queue_t *queue = q_create(sizeof(g_tree_node *), MAX_PEOPLE);
 	q_enqueue(queue, &node);
 
-	while(!q_is_empty(queue)) {
+	while (!q_is_empty(queue)) {
 		g_tree_node *current_node = *(g_tree_node **)q_front(queue);
 		q_dequeue(queue);
 
 		for (int i = 0; i < current_node->nr_children; i++) {
-			if (!vizitat[((tree_data *)(current_node->children[i]->data))->id]) {
-				vizitat[((tree_data *)(current_node->children[i]->data))->id] = 1;
-				dist[((tree_data *)(current_node->children[i]->data))->id] = dist[((tree_data *)(current_node->data))->id] + 1;
-				parent[((tree_data *)(current_node->children[i]->data))->id] = current_node;
+			int child_id = ((tree_data *)(current_node->children[i]->data))->id;
+			if (!vizitat[child_id]) {
+				vizitat[child_id] = 1;
+
+				int cur_id = ((tree_data *)(current_node->data))->id;
+				dist[child_id] = dist[cur_id] + 1;
+				parent[child_id] = current_node;
 				q_enqueue(queue, &current_node->children[i]);
 			}
 		}
@@ -353,9 +355,10 @@ g_tree_node *get_that_ancestor(g_tree *tree, g_tree_node *node1,
 		return node1;
 
 	if (tree->root == node1 || tree->root == node2)
-			return tree->root;
+		return tree->root;
 
-	while (parent[((tree_data *)(node1->data))->id] != parent[((tree_data *)(node2->data))->id]) {
+	while (parent[((tree_data *)(node1->data))->id] !=
+		   parent[((tree_data *)(node2->data))->id]) {
 		if (tree->root == node1 || tree->root == node2)
 			return tree->root;
 		node1 = parent[((tree_data *)(node1->data))->id];
@@ -364,14 +367,14 @@ g_tree_node *get_that_ancestor(g_tree *tree, g_tree_node *node1,
 	return parent[((tree_data *)(node1->data))->id];
 }
 
-/** @brief Functia apeleaza bfs-ul si get_that_ancestor pentru a gasi cel mai 
+/** @brief Functia apeleaza bfs-ul si get_that_ancestor pentru a gasi cel mai
  *		   apropiat stramos comun
  *  @param tree: Arborele
  *  @param node1: Nodul 1
  *  @param node2: Nodul 2
  *  @return Returneaza nodul care este stramos comun
  */
-static 
+static
 g_tree_node *least_comm_ancestor(g_tree *tree, g_tree_node *node1,
 								 g_tree_node *node2)
 {
@@ -410,12 +413,12 @@ g_tree_node *least_comm_ancestor(g_tree *tree, g_tree_node *node1,
 	bfs(tree->root, parent, vizitat, dist);
 
 	g_tree_node *ancestor = get_that_ancestor(tree, node1, node2, parent, dist);
-	
+
 	free(parent);
 	free(vizitat);
 	free(dist);
-	
-	return ancestor;	
+
+	return ancestor;
 }
 
 /** @brief Functia imi gaseste primul repost comun al doua reposturi
@@ -443,7 +446,6 @@ void common_repost(g_tree **tree_vector) {
 	g_tree_node *node1 = get_node(tree->root, &find_node1, tree->compare);
 	g_tree_node *node2 = get_node(tree->root, &find_node2, tree->compare);
 
-
 	g_tree_node *ancestor = least_comm_ancestor(tree, node1, node2);
 
 	if (!ancestor) {
@@ -452,7 +454,7 @@ void common_repost(g_tree **tree_vector) {
 		printf("The first common repost of %d and %d is %d\n", repost_id1,
 			   repost_id2, ((tree_data *)(ancestor->data))->id);
 	}
-	
+
 	free(find_node1.data);
 	free(find_node2.data);
 }

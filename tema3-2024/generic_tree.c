@@ -57,11 +57,11 @@ g_tree *g_tree_create(unsigned int data_size, int (*compare)(void *, void *),
  *		   al doilea nod din functia compare.
  *  @param node: Nodul curent
  *  @param node_to_get: Nodul ce contine in void *data o informatie adecavata
- * 						astfel incat functia compare sa il poata recunoaste in
- * 						arbore
+ *						astfel incat functia compare sa il poata recunoaste in
+ *						arbore
  *  @param compare: Pointer spre o functie de comparare a nodurilor din arbore.
- * 					Intoarce 1 daca primul nod este mai mare, 0 daca sunt egale,
- * 					-1 daca al doilea nod este mai mare
+ *					Intoarce 1 daca primul nod este mai mare, 0 daca sunt egale,
+ *					-1 daca al doilea nod este mai mare
  *  @return Returneaza nodul corespunzator, conform functiei compare
  */
 g_tree_node *get_node(g_tree_node *node, g_tree_node *node_to_get,
@@ -88,10 +88,9 @@ g_tree_node *get_node(g_tree_node *node, g_tree_node *node_to_get,
 	return NULL;
 }
 
-
 /** @brief Functia insereaza in arbore un nod ce contine informatia data.
- * 		   Inserarea se face pe baza raspunsului functiei compare. Daca aceasta
- * 		   intoarce 0, acele va fi nodul de unde va mai pleca o legatura.
+ *		   Inserarea se face pe baza raspunsului functiei compare. Daca aceasta
+ *		   intoarce 0, acele va fi nodul de unde va mai pleca o legatura.
  *  @param tree: Arborele in care vrem sa adaugam
  *  @param data: Datele pe care vrem sa le inseram in arbore.
  */
@@ -130,7 +129,6 @@ void g_tree_insert(g_tree *tree, void *data) {
 	where_to_add->nr_children++;
 }
 
-
 /** @brief Interschimba doi pointeri intre ei
  *  @param node_a: Primul nod
  *  @param node_b: Al doilea nod
@@ -144,7 +142,7 @@ void swap_nodes(g_tree_node **node_a, g_tree_node **node_b) {
 }
 
 /** @brief Strica legatura dintre parintele nod si al i-lea copil al sau
- *  	   Legatura este acum spre NULL
+ *		   Legatura este acum spre NULL
  *  @param node: Nodul parinte
  *  @param i: Indicele nodului copil
  */
@@ -157,10 +155,10 @@ void remove_kid(g_tree_node *node, int i) {
 }
 
 /** @brief Functia distruce legatura dintre doua noduri parinte-copil din arbore
- * 		   Functia este apelata recursiv pentru a obtine rezultatul dorit
+ *		   Functia este apelata recursiv pentru a obtine rezultatul dorit
  *  @param node: nodul curent
  *  @param node_to_remove: un nod ce contine informatii curespunzatoare cu
- * 						   nodul pe care vrem sa il eliberam
+ *						   nodul pe care vrem sa il eliberam
  *  @param compare: Functia de comparare a nodurilor
  *  @return intoarce nodul parinte
  */
@@ -201,8 +199,8 @@ g_tree_node *destroy_edge(g_tree_node *node, g_tree_node *node_to_remove,
  *  @param tree: Arborele in care vrem sa distrugem legatura
  *  @param data_to_remove: Nodul pe care vrem sa il eliminam din arbore
  *  @return Functia intoarce nodul ce contine informatia data. Cel care
- * 			a fost eliminat din arbore. Practic radacina subarborelui
- * 			eliminat
+ *			a fost eliminat din arbore. Practic radacina subarborelui
+ *			eliminat
  */
 g_tree_node *remove_g_subtree(g_tree *tree, g_tree_node *node_to_remove) {
 	if (!tree)

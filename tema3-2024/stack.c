@@ -3,7 +3,6 @@
  *                        Ghenescu Stefan <stefan.ghenescu2005@gmail.com>
  */
 
-
 #include "structuri.h"
 
 stack_t *init_stack(unsigned int data_size) {
@@ -16,7 +15,7 @@ stack_t *init_stack(unsigned int data_size) {
 }
 
 /** @param stack: Stiva a carei dimensiune vrem sa o aflam.
- *  @return Returneaza dimensiunea stivei, -1 la eroare. 
+ *  @return Returneaza dimensiunea stivei, -1 la eroare.
  */
 int get_size_stack(stack_t *stack) {
 	if (!stack)
@@ -41,16 +40,15 @@ int is_empty_stack(stack_t *stack) {
 
 	if (stack->list->size == 0)
 		return 1;
-	
+
 	return 0;
 }
-
 
 /** @brief Functia intoarce informatia din varful stivei
  *  @param stack: Stiva
  *  @return Informatia din varful stivei, NULL in caz contrar
  */
-void* peek_stack(stack_t *stack) {
+void *peek_stack(stack_t *stack) {
 	if (!stack)
 		return NULL;
 
@@ -75,7 +73,7 @@ void pop_stack(stack_t *stack) {
 
 	if (stack->list->size == 0)
 		return;
-	
+
 	ll_node_t *nod = ll_remove_nth_node(stack->list, 0);
 	free(nod->data);
 	free(nod);
@@ -95,7 +93,7 @@ void push_stack(stack_t *stack, void *new_data) {
 }
 
 /** @brief Iti goleste stiva
- *  @param stack: stiva 
+ *  @param stack: stiva
  */
 void clear_stack(stack_t *stack) {
 	for (unsigned int i = 0; i < stack->list->size; i++)
@@ -104,7 +102,7 @@ void clear_stack(stack_t *stack) {
 
 /** @brief Iti elibereaza memoria utilizata pentru tot continutul stivei
  *         si elibereaza memoria folosita pentru aceasta. Facand ca stack
- * 		   sa pointeze spre NULL.
+ *		   sa pointeze spre NULL.
  *  @param stack: Stiva
  */
 void purge_stack(stack_t **stack) {

@@ -4,11 +4,10 @@
 
 #include "structuri.h"
 
-
 /* Functia creeaza o lista dublu inlantuita */
 dll_list *dll_create(int data_size) {
 	dll_list *lista = malloc(sizeof(dll_list));
-    DIE(!lista, "Eroare la alocare\n");
+	DIE(!lista, "Eroare la alocare\n");
 
 	lista->data_size = data_size;
 	lista->head = NULL;
@@ -47,7 +46,7 @@ dll_node *dll_remove_nth_node(dll_list *list, int n) {
 	return ptr;
 }
 
-/* Adauga un nod continand informatia new_data in lista 
+/* Adauga un nod continand informatia new_data in lista
  * dublu inlantuita. Indexarea se face de la 0 (primului
  * element ii corespune 1 s.a.s.m.d.) */
 void
@@ -58,10 +57,10 @@ dll_add_nth_node(dll_list *list, int n, void *new_data) {
 	}
 
 	dll_node *nod = malloc(sizeof(dll_node));
-    DIE(!nod, "Eroare la alocare\n");
+	DIE(!nod, "Eroare la alocare\n");
 
 	nod->data = malloc(list->data_size);
-    DIE(!nod->data, "Eroare la alocare\n");
+	DIE(!nod->data, "Eroare la alocare\n");
 
 	memcpy(nod->data, new_data, list->data_size);
 	nod->next = NULL;
@@ -105,9 +104,8 @@ int dll_get_size(dll_list *list) {
 	return list->size;
 }
 
-
 void
-dll_print_int_list(dll_list* list) {
+dll_print_int_list(dll_list *list) {
 	dll_node *ptr = list->head;
 
 	for (int i = 0; i < list->size; i++) {
@@ -117,9 +115,8 @@ dll_print_int_list(dll_list* list) {
 	printf("\n");
 }
 
-
 void
-dll_print_string_list(dll_list* list) {
+dll_print_string_list(dll_list *list) {
 	if (!list)
 		return;
 
@@ -133,12 +130,12 @@ dll_print_string_list(dll_list* list) {
 }
 
 /* Elibereza toata memoria folosita de lista.
- * Al doilea parametru este o functie care elibereaza 
+ * Al doilea parametru este o functie care elibereaza
  * memoria ocupata de campul data al unui nod in cazul
  * in care pastram structuri complexe in nodurile listei.
  * Daca al doilea parametru este NULL, se elibereaza doar memoria
- * ocupata de nodurile liste si de lista. La final lista este setata 
- * pe NULL */ 
+ * ocupata de nodurile liste si de lista. La final lista este setata
+ * pe NULL */
 void
 dll_free(dll_list **pp_list, void (*elem_free)(void *)) {
 	dll_list *list = *pp_list;
@@ -170,7 +167,6 @@ dll_free(dll_list **pp_list, void (*elem_free)(void *)) {
 	*pp_list = NULL;
 }
 
-
 /* Elimina in O(1) ultimul nod al listei
  * memoria este eliberata de apelant*/
 dll_node *dll_remove_nth_node_from_end(dll_list *list) {
@@ -193,8 +189,7 @@ dll_node *dll_remove_nth_node_from_end(dll_list *list) {
 	return nod_to_remove;
 }
 
-
-/* Functia scoate din lista nodul spre care pointeaza node_to_remove 
+/* Functia scoate din lista nodul spre care pointeaza node_to_remove
  * si elibereaza memoria consumata de acesta.
  * Functia se executa in O(1) */
 void remove_a_node(dll_node *node_to_remove, dll_list *list) {
@@ -202,7 +197,7 @@ void remove_a_node(dll_node *node_to_remove, dll_list *list) {
 		return;
 
 	if (list->size == 1 && node_to_remove == list->head) {
-		/* Daca eliberam doar primul nod din lista si dupa 
+		/* Daca eliberam doar primul nod din lista si dupa
 		 * lista va ramane goala */
 		dll_node *ptr = list->head;
 		free(ptr->data);
@@ -215,15 +210,15 @@ void remove_a_node(dll_node *node_to_remove, dll_list *list) {
 
 	if (node_to_remove == list->head) {
 		/* Daca elibera primul nod din lista */
-	 	dll_node *tail = list->head->prev;
-	 	list->head->prev->next = list->head->next;
-	 	list->head->next->prev = list->head->prev;
-	 	free(list->head->data);
-	 	free(list->head);
+		dll_node *tail = list->head->prev;
+		list->head->prev->next = list->head->next;
+		list->head->next->prev = list->head->prev;
+		free(list->head->data);
+		free(list->head);
 
 		list->head = tail->next;
 		list->size--;
-	 	return;
+		return;
 	}
 
 	/* Orice alta situatie */
