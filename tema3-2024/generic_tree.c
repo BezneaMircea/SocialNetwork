@@ -7,6 +7,21 @@
  *  @param data_size: Dimensiunea datelor copiate
  *  @return Returneaza un nod al arborelui generic
  */
+static
+int compare_id(void *data_a, void *data_b) {
+	int node1 = ((tree_data *)(((g_tree_node *)data_a)->data))->id; // id-ul 1
+	int node2 = ((tree_data *)(((g_tree_node *)data_b)->data))->id; // id-ul 2
+
+	if (node1 > node2)
+		return 1;
+
+	if (node1 < node2)
+		return -1;
+
+	return 0;
+}
+
+
 static g_tree_node *
 g_tree_create_node(void *data, unsigned max_children_nr,
 				   unsigned int data_size)
@@ -229,11 +244,66 @@ void purge_g_tree(g_tree **tree)
 }
 
 static
-g_tree_node *get_that_ancestor(g_tree_node *root, g_tree_node *node1,
-							   g_tree_node *node2,
-							   int (*compare)(void *, void *))
-{
+void bfs (g_tree_node *node, g_tree_node **parent, int *vizitat, int *dist) {
+	dist[((tree_data *)(node->data))->id] = 0;
+	vizitat[((tree_data *)(node->data))->id] = 1;
 
+	queue_t *queue = q_create(sizeof(g_tree_node *), MAX_PEOPLE);
+	q_enqueue(queue, &node);
+
+	while(!q_is_empty(queue)) {
+		g_tree_node *current_node = *(g_tree_node **)q_front(queue);
+		q_dequeue(queue);
+
+		for (int i = 0; i < current_node->nr_children; i++) {
+			if (!vizitat[((tree_data *)(current_node->children[i]->data))->id]) {
+				vizitat[((tree_data *)(current_node->children[i]->data))->id] = 1;
+				dist[((tree_data *)(current_node->children[i]->data))->id] = dist[((tree_data *)(current_node->data))->id] + 1;
+				parent[((tree_data *)(current_node->children[i]->data))->id] = current_node;
+				q_enqueue(queue, &current_node->children[i]);
+			}
+		}
+	}
+
+	q_free(queue);
+	free(queue);
+}
+
+static
+g_tree_node *get_that_ancestor(g_tree *tree, g_tree_node *node1,
+							   g_tree_node *node2, g_tree_node **parent,
+							   int *dist, int (*compare)(void *, void *))
+{
+	int dist1 = dist[((tree_data *)(node1->data))->id];
+	int dist2 = dist[((tree_data *)(node2->data))->id];
+
+	if (dist1 > dist2) {
+		int d = dist1 - dist2;
+		while (d > 0) {
+			node1 = parent[((tree_data *)(node1->data))->id];
+			d--;
+		}
+	} else {
+		int d = dist2 - dist1;
+		while (d > 0) {
+			node2 = parent[((tree_data *)(node2->data))->id];
+			d--;
+		}
+	}
+
+	if (compare(node1, node2) == 0)
+		return node1;
+
+	if (tree->root == node1 || tree->root == node2)
+			return tree->root;
+
+	while (compare(parent[((tree_data *)(node1->data))->id], parent[((tree_data *)(node2->data))->id]) != 0) {
+		if (tree->root == node1 || tree->root == node2)
+			return tree->root;
+		node1 = parent[((tree_data *)(node1->data))->id];
+		node2 = parent[((tree_data *)(node2->data))->id];
+	}
+	return parent[((tree_data *)(node1->data))->id];
 }
 
 g_tree_node *least_comm_ancestor(g_tree *tree, g_tree_node *node1,
@@ -259,10 +329,23 @@ g_tree_node *least_comm_ancestor(g_tree *tree, g_tree_node *node1,
 		return NULL;
 	}
 
-	if (!tree->compare(tree->root, node1) || !(tree->compare(tree->root, node2))) {
-		printf("Root is the ancestor\n");
+	if (compare_id(tree->root, node1) == 0 ||
+		compare_id(tree->root, node2) == 0)
 		return tree->root;
-	}
 
-	return get_that_ancestor(tree->root, node1, node2, tree->compare);
+	g_tree_node **parent = malloc(MAX_PEOPLE * sizeof(g_tree_node *));
+	int *vizitat = calloc(MAX_PEOPLE, sizeof(int));
+	int *dist = calloc(MAX_PEOPLE, sizeof(int));
+	bfs(tree->root, parent, vizitat, dist);
+
+	g_tree_node *ancestor = get_that_ancestor(tree, node1, node2, parent, dist, compare_id);
+	
+	free(parent);
+	free(vizitat);
+	free(dist);
+	
+	return ancestor;
+
+	// trebuie sa dau free la parents
+	
 }

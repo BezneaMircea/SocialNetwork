@@ -233,3 +233,35 @@ void ratio(g_tree **tree_vector) {
 			   post_that_ratioed);
 	}
 }
+
+void common_repost(g_tree **tree_vector) {
+	int post_id = atoi(strtok(NULL, "\n "));
+	int repost_id1 = atoi(strtok(NULL, "\n "));
+	int repost_id2 = atoi(strtok(NULL, "\n "));
+
+	g_tree *tree = tree_vector[post_id];
+
+	g_tree_node find_node1;
+	find_node1.data = malloc(sizeof(tree_data));
+	((tree_data *)(find_node1.data))->parrent_id = repost_id1;
+
+	g_tree_node find_node2;
+	find_node2.data = malloc(sizeof(tree_data));
+	((tree_data *)(find_node2.data))->parrent_id = repost_id2;
+
+	g_tree_node *node1 = get_node(tree->root, &find_node1, tree->compare);
+	g_tree_node *node2 = get_node(tree->root, &find_node2, tree->compare);
+
+
+	g_tree_node *ancestor = least_comm_ancestor(tree, node1, node2);
+
+	if (!ancestor) {
+		printf("No common repost found\n");
+	} else {
+		printf("The first common repost of %d and %d is %d\n", repost_id1,
+			   repost_id2, ((tree_data *)(ancestor->data))->id);
+	}
+	
+	free(find_node1.data);
+	free(find_node2.data);
+}
