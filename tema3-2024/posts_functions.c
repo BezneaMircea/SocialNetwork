@@ -104,3 +104,35 @@ void get_reposts(g_tree **tree_vector) {
 	free(node_to_get_repost_from.data);
 	print_sub_tree(sub_tree_root, was_it_a_repost);
 }
+
+void delete(g_tree **tree_vector) {
+	int post_id = atoi(strtok(NULL, "\n "));
+	char *repost_id_string = strtok(NULL, "\n ");
+
+	g_tree_node node_to_delete_from;
+	node_to_delete_from.data = malloc(sizeof(tree_data));
+	((tree_data *)(node_to_delete_from.data))->parrent_id = post_id;
+
+	int repost_id;
+	int was_it_a_repost = 0;
+	if (repost_id_string) {
+		repost_id = atoi(repost_id_string);
+		((tree_data *)(node_to_delete_from.data))->parrent_id = repost_id;
+		was_it_a_repost = 1;
+	}
+
+	g_tree_node *sub_tree_root = remove_g_subtree(tree_vector[post_id],
+										  		  &node_to_delete_from);
+
+	if (was_it_a_repost) {
+		printf("Deleted repost #%d of post %s\n", repost_id,
+			   ((tree_data *)(tree_vector[post_id]->root->data))->post_name);
+	} else {
+		printf("Deleted %s\n", ((tree_data *)(sub_tree_root->data))->post_name);
+	}
+
+	clear_tree(sub_tree_root, tree_vector[post_id]->free_data);
+	free(node_to_delete_from.data);
+
+	
+}

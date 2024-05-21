@@ -37,18 +37,15 @@ void handle_input_posts(char *input, g_tree **tree_vector)
 	else if (!strcmp(cmd, "ratio"))
 		(void)cmd;
 		// TODO: Add function
-	else if (!strcmp(cmd, "delete"))
-		(void)cmd;
-		// TODO: Add function
+	else if (!strcmp(cmd, "delete")) {
+		delete(tree_vector);
+	}
 	else if (!strcmp(cmd, "get-likes"))
 		(void)cmd;
 		// TODO: Add function
 	else if (!strcmp(cmd, "get-reposts")) {
 		get_reposts(tree_vector);
 	}
-	else if (!strcmp(cmd, "get-likes"))
-		(void)cmd;
-		// TODO: Add function
 
 	free(commands);
 }

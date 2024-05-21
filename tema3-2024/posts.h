@@ -3,7 +3,6 @@
 
 #define MAX_CHILD_NR 100
 #define MAX_TITLE_LEN 280
-#define MAX_NAME_LENGHT
 
 #include "structuri.h"
 #include "friends.h"
@@ -26,5 +25,6 @@ void handle_input_posts(char *input, g_tree **tree_vector);
 void create_post(g_tree **tree, int id);
 void get_reposts(g_tree **tree_vector);
 void repost(g_tree **tree_vector, int id);
+void delete(g_tree **tree_vector);
 
 #endif // POSTS_H
