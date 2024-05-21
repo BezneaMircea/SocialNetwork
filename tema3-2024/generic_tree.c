@@ -7,21 +7,6 @@
  *  @param data_size: Dimensiunea datelor copiate
  *  @return Returneaza un nod al arborelui generic
  */
-static
-int compare_id(void *data_a, void *data_b) {
-	int node1 = ((tree_data *)(((g_tree_node *)data_a)->data))->id; // id-ul 1
-	int node2 = ((tree_data *)(((g_tree_node *)data_b)->data))->id; // id-ul 2
-
-	if (node1 > node2)
-		return 1;
-
-	if (node1 < node2)
-		return -1;
-
-	return 0;
-}
-
-
 static g_tree_node *
 g_tree_create_node(void *data, unsigned max_children_nr,
 				   unsigned int data_size)
@@ -272,7 +257,7 @@ void bfs (g_tree_node *node, g_tree_node **parent, int *vizitat, int *dist) {
 static
 g_tree_node *get_that_ancestor(g_tree *tree, g_tree_node *node1,
 							   g_tree_node *node2, g_tree_node **parent,
-							   int *dist, int (*compare)(void *, void *))
+							   int *dist)
 {
 	int dist1 = dist[((tree_data *)(node1->data))->id];
 	int dist2 = dist[((tree_data *)(node2->data))->id];
@@ -291,13 +276,13 @@ g_tree_node *get_that_ancestor(g_tree *tree, g_tree_node *node1,
 		}
 	}
 
-	if (compare(node1, node2) == 0)
+	if (node1 == node2)
 		return node1;
 
 	if (tree->root == node1 || tree->root == node2)
 			return tree->root;
 
-	while (compare(parent[((tree_data *)(node1->data))->id], parent[((tree_data *)(node2->data))->id]) != 0) {
+	while (parent[((tree_data *)(node1->data))->id] != parent[((tree_data *)(node2->data))->id]) {
 		if (tree->root == node1 || tree->root == node2)
 			return tree->root;
 		node1 = parent[((tree_data *)(node1->data))->id];
@@ -329,8 +314,7 @@ g_tree_node *least_comm_ancestor(g_tree *tree, g_tree_node *node1,
 		return NULL;
 	}
 
-	if (compare_id(tree->root, node1) == 0 ||
-		compare_id(tree->root, node2) == 0)
+	if (tree->root == node1 || tree->root == node2)
 		return tree->root;
 
 	g_tree_node **parent = malloc(MAX_PEOPLE * sizeof(g_tree_node *));
@@ -338,7 +322,7 @@ g_tree_node *least_comm_ancestor(g_tree *tree, g_tree_node *node1,
 	int *dist = calloc(MAX_PEOPLE, sizeof(int));
 	bfs(tree->root, parent, vizitat, dist);
 
-	g_tree_node *ancestor = get_that_ancestor(tree, node1, node2, parent, dist, compare_id);
+	g_tree_node *ancestor = get_that_ancestor(tree, node1, node2, parent, dist);
 	
 	free(parent);
 	free(vizitat);
