@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2024, <> Beznea Mircea <bezneamirceaandrei21@gmail.com>
+ *                        Ghenescu Stefan <stefan.ghenescu2005@gmail.com>
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -17,6 +22,12 @@ int id_increase(void) {
 	return id;
 }
 
+/** @brief Aceasta functie se ocupa doar de parsarea comenzilor, facand un apel
+ *		   catre o a alta functie din feed_functions.c
+ *  @param input: Comanda
+ *  @param tree_vector: Vectorul de copaci
+ *  @param graph: Graful de prieteni
+ */
 void handle_input_feed(char *input, g_tree **tree_vector, list_graph_t *graph)
 {
 	char *commands = strdup(input);
@@ -32,7 +43,7 @@ void handle_input_feed(char *input, g_tree **tree_vector, list_graph_t *graph)
 	} else if (!strcmp(cmd, "friends-repost")) {
 		friends_repost(tree_vector, graph);
 	} else if (!strcmp(cmd, "common-groups")) {
-		clique(tree_vector, graph);
+		clique(graph);
 	} else if (!strcmp(cmd, "create")) {
 		int id = id_increase();
 		create_post(&tree_vector[id], id);

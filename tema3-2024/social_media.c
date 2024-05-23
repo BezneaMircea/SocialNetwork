@@ -74,8 +74,8 @@ int main(void)
 		#endif
 	}
 
-	/* Eliberam toata memoria ocupata de structurile alocate
-	 * anterior */
+	/* Eliberam toata memoria ocupata de structurile pentru care am alocat
+	 * memorie anterior */
 	purge_graph(&graph);
 	free_users();
 	free(input);

@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2024, <> Beznea Mircea <bezneamirceaandrei21@gmail.com>
+ *                        Ghenescu Stefan <stefan.ghenescu2005@gmail.com>
+ */
+
 #include "posts.h"
 
 /** @brief Functie trimisa ca parametru folosita pentru eliberarea
@@ -17,9 +22,9 @@ void free_data(void *data) {
  *  @return 0 le egalitate 1 daca data_a > data_b si -1 daca data_a < data_b
  */
 int compare(void *data_a, void *data_b) {
-	/// id-ul nodului
+	/* id-ul nodului */
 	int node_id = ((tree_data *)(((g_tree_node *)data_a)->data))->id;
-	/// id-ul lui tata
+	/* id-ul  parintelui */
 	int dad_id = ((tree_data *)(((g_tree_node *)data_b)->data))->parrent_id;
 
 	if (node_id > dad_id)
@@ -54,8 +59,10 @@ void create_post(g_tree **tree, int id) {
 	DIE(!data_to_insert.post_name, "Eroare la alocare\n");
 
 	strncpy(data_to_insert.post_name, title, MAX_TITLE_LEN);
+	/* Ne-am creat datele pe care vrem sa le inseram */
 
 	g_tree_insert(*tree, &data_to_insert);
+	/* Folosind functia de insert cream postarea */
 
 	printf("Created %s for %s\n", title, name);
 }
@@ -79,13 +86,21 @@ void repost(g_tree **tree_vector, int id) {
 	DIE(!data_to_add.likes, "Eroare la alocare\n");
 	data_to_add.post_name = NULL;
 	data_to_add.parrent_id = post_id;
+	/* Cream datele pe care vrem sa le repostam */
 
 	if (repost_id_string) {
 		repost_id = atoi(repost_id_string);
 		data_to_add.parrent_id = repost_id;
+		/* Daca este repost la un repost schimbam id-ul parintelui
+		 * unde vrem sa inseram */
 	}
 
 	g_tree_insert(tree_vector[post_id], &data_to_add);
+	/* Functia g_tree_insert trateaza cazul in care nu se poate adauga
+	 * legatura prin afisarea unui mesaj. Putem schimba logica de acolo
+	 * si sa obtinem ce rezultat dorim prin niste modificari minore
+	 * (ex: putem da exit(0) sau sa facem ca functia sa intoarce un int
+	 *      si sa dam return -1 etc.) */
 	printf("Created repost #%d for %s\n", data_to_add.id, name);
 }
 
@@ -213,13 +228,17 @@ void get_reposts(g_tree **tree_vector) {
 		((tree_data *)(node_to_get_repost_from.data))->parrent_id = repost_id;
 		was_it_a_repost = 1;
 	}
+	/* Am simulat un nod care va face ca urmatoare functie (get_node) sa
+	 * imi intoarca nodul parinte practic nodul cu id-ul parrent_id */
 
 	g_tree_node *sub_tree_root = get_node(tree_vector[post_id]->root,
 										  &node_to_get_repost_from,
 										  tree_vector[post_id]->compare);
-
+	/* Avem nodul de la care vrem sa incepem afisarea */
 	free(node_to_get_repost_from.data);
+	/* Eliberam memoria */
 	print_sub_tree(sub_tree_root, was_it_a_repost);
+	/* Executam afisarea */
 }
 
 /** @brief Functia sterge toata ierarhia de postari/repostari si face parsarea
@@ -242,9 +261,12 @@ void delete(g_tree **tree_vector) {
 		((tree_data *)(node_to_delete_from.data))->parrent_id = repost_id;
 		was_it_a_repost = 1;
 	}
+	/* Simulam din nou un nod si stricam legatura dintre nodul
+	 * care ii corespunde nodului simulat din arbore si parintele lui */
 
 	g_tree_node *sub_tree_root = remove_g_subtree(tree_vector[post_id],
 												  &node_to_delete_from);
+	/* Avem radacina subarborelui pe care vrem sa il stergem */
 
 	if (was_it_a_repost) {
 		printf("Deleted repost #%d of post %s\n", repost_id,
@@ -252,9 +274,12 @@ void delete(g_tree **tree_vector) {
 	} else {
 		printf("Deleted %s\n", ((tree_data *)(sub_tree_root->data))->post_name);
 	}
+	/* Afisam corespunzator */
 
 	clear_tree(sub_tree_root, tree_vector[post_id]->free_data);
+	/* Eliberam memoria ocupata de subarborele sters */
 	free(node_to_delete_from.data);
+	/* Eliberam memoria alocata pentru nodul simulat */
 }
 
 /** @brief Face ratio-ul si parsarea
@@ -271,10 +296,15 @@ void ratio(g_tree **tree_vector) {
 
 	int post_that_ratioed = og_post_id;
 	for (int i = 0; i < root_node->nr_children; i++) {
+		/* Iteram prin toate reposturile postarii */
 		int cur_likes = ((tree_data *)(root_node->children[i]->data))->nr_likes;
 		int cur_id = ((tree_data *)(root_node->children[i]->data))->id;
-		if (cur_likes > max_likes)
+		if (cur_likes > max_likes) {
 			post_that_ratioed = cur_id;
+			max_likes = cur_likes;
+			/* Facem interschimbarea corespunzatoare daca postarea
+			 * si-a luat ratio */
+		}
 	}
 
 	if (post_that_ratioed == og_post_id) {
