@@ -7,7 +7,6 @@ MY_UTILS=utils
 LL_LIST=linked_list
 STRUCTURI=structuri
 QUEUE=queue
-DLL_LIST=double_linked_list
 USERS=users
 STACK=stack
 GRAPH=graph_with_list
@@ -27,13 +26,13 @@ build: friends posts feed
 # Any other object file that is needed for the other files
 # add it here, separated by space
 
-friends: $(USERS).o $(FRIENDS).o $(FRIENDS_F).o $(LL_LIST).o $(DLL_LIST).o $(QUEUE).o $(STACK).o $(G_TREE).o $(GRAPH).o social_media_friends.o
+friends: $(USERS).o $(FRIENDS).o $(FRIENDS_F).o $(LL_LIST).o $(QUEUE).o $(STACK).o $(G_TREE).o $(GRAPH).o social_media_friends.o
 	$(CC) $(CFLAGS) -o $@ $^
 
-posts: $(USERS).o $(LL_LIST).o $(DLL_LIST).o $(QUEUE).o $(STACK).o $(POSTS).o $(POSTS_F).o $(GRAPH).o $(G_TREE).o social_media_posts.o
+posts: $(USERS).o $(LL_LIST).o $(QUEUE).o $(STACK).o $(POSTS).o $(POSTS_F).o $(GRAPH).o $(G_TREE).o social_media_posts.o
 	$(CC) $(CFLAGS) -o $@ $^
 
-feed: $(FEED).o $(FEED_F).o $(USERS).o $(LL_LIST).o $(DLL_LIST).o $(QUEUE).o $(STACK).o $(POSTS).o $(POSTS_F).o $(GRAPH).o $(G_TREE).o $(FRIENDS).o $(FRIENDS_F).o social_media_feed.o
+feed: $(FEED).o $(FEED_F).o $(USERS).o $(LL_LIST).o $(QUEUE).o $(STACK).o $(POSTS).o $(POSTS_F).o $(GRAPH).o $(G_TREE).o $(FRIENDS).o $(FRIENDS_F).o social_media_feed.o
 	$(CC) $(CFLAGS) -o $@ $^
 
 social_media_friends.o:
@@ -46,9 +45,6 @@ social_media_feed.o:
 	$(CC) $(CFLAGS) -c -D TASK_3 -o $@ social_media.c
 
 $(USERS).o: $(USERS).c $(USERS).h
-	$(CC) $(CFLAGS) $^ -c
-
-$(DLL_LIST).o: $(DLL_LIST).c $(STRUCTURI).h
 	$(CC) $(CFLAGS) $^ -c
 
 $(STACK).o: $(STACK).c $(STRUCTURI).h
