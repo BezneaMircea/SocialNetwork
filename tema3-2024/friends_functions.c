@@ -134,7 +134,7 @@ void common_friends(list_graph_t *graph) {
 	linked_list_t *list_user = graph->neighbors[id_name1];
 	ll_node_t *friend = list_user->head;
 
-	/* Parcurgerea prietenilor primului utilizator si abdatarea vectorului 
+	/* Parcurgerea prietenilor primului utilizator si abdatarea vectorului
 	 * de prieteni comuni */
 	while (friend) {
 		int friend_id = *(int *)friend->data;
@@ -181,7 +181,7 @@ void distance_friend(list_graph_t *graph) {
 
 	int id_name1 = get_user_id(name1);
 	int id_name2 = get_user_id(name2);
-	
+
 	/* BFS incepand din nodul primului utilizator */
 	int *vizitat = calloc(MAX_PEOPLE, sizeof(int));
 	int *dist = calloc(MAX_PEOPLE, sizeof(int));

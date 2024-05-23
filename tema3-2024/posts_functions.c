@@ -137,6 +137,7 @@ void like(g_tree **tree_vector) {
 
 	((tree_data *)(look_for_node_to_like.data))->parrent_id = post_id;
 
+	/* Verificam daca primim de la input si un repost_id */
 	int repost_id;
 	int was_it_a_repost = 0;
 	if (repost_id_string) {
@@ -145,6 +146,8 @@ void like(g_tree **tree_vector) {
 		was_it_a_repost = 1;
 	}
 
+	/* Am simulat un nod care va face ca urmatoare functie (get_node) sa
+	 * imi intoarca nodul parinte practic nodul cu id-ul parrent_id */
 	g_tree_node *node_to_like = get_node(tree_vector[post_id]->root,
 										&look_for_node_to_like,
 										tree_vector[post_id]->compare);
@@ -153,6 +156,12 @@ void like(g_tree **tree_vector) {
 	char *post_name = ((tree_data *)
 					   (tree_vector[post_id]->root->data))->post_name;
 
+	/* Vectorul de likes pentru un nod este un vector de frecventa unde pe
+	 * pozitia i ma uit daca userul cu ID-ul = i a dat like
+	 * Daca likes[user_id] = 1 inseamna ca userul cu user_id a dat like deja
+	 * deci urmeaza acum sa dea dislike si sa scada numarul de likeuri
+	 * Daca likes[user_id] = 0 inseamna ca userul cu user_id nu a dat like
+	 * deci urmeaza sa dea like si sa creasca numarul de likeuri */
 	if (((tree_data *)node_to_like->data)->likes[like_user_id] == 0) {
 		((tree_data *)(node_to_like->data))->nr_likes++;
 		((tree_data *)(node_to_like->data))->likes[like_user_id] = 1;
@@ -185,6 +194,7 @@ void get_likes(g_tree **tree_vector) {
 
 	((tree_data *)(look_for_node_likes.data))->parrent_id = post_id;
 
+	/* Verificam daca primim de la input si un repost_id */
 	int repost_id;
 	int was_it_a_repost = 0;
 	if (repost_id_string) {
@@ -193,10 +203,14 @@ void get_likes(g_tree **tree_vector) {
 		was_it_a_repost = 1;
 	}
 
+	/* Am simulat un nod care va face ca urmatoare functie (get_node) sa
+	 * imi intoarca nodul parinte practic nodul cu id-ul parrent_id */
 	g_tree_node *node_likes = get_node(tree_vector[post_id]->root,
 									   &look_for_node_likes,
 									   tree_vector[post_id]->compare);
 
+	/* Afisez pentru un nod, adica pentru o postare/repostare
+	 * numarul de like-uri */
 	if (was_it_a_repost)
 		printf("Repost #%d has %d likes\n", repost_id,
 			   ((tree_data *)(node_likes->data))->nr_likes);
@@ -221,6 +235,7 @@ void get_reposts(g_tree **tree_vector) {
 
 	((tree_data *)(node_to_get_repost_from.data))->parrent_id = post_id;
 
+	/* Verificam daca primim de la input si un repost_id */
 	int repost_id;
 	int was_it_a_repost = 0;
 	if (repost_id_string) {
@@ -394,13 +409,19 @@ g_tree_node *get_that_ancestor(g_tree *tree, g_tree_node *node1,
 	if (tree->root == node1 || tree->root == node2)
 		return tree->root;
 
+	/* Voi urca in arbore cu ambele noduri in acelasi timp pana cand parintii
+	 * sunt egali si atunci returnez parintele care va fi cel mai mic stramos
+	 * comun */
 	while (parent[((tree_data *)(node1->data))->id] !=
 		   parent[((tree_data *)(node2->data))->id]) {
 		if (tree->root == node1 || tree->root == node2)
 			return tree->root;
+
+		/* Urc un nivel cu cele doua noduri */
 		node1 = parent[((tree_data *)(node1->data))->id];
 		node2 = parent[((tree_data *)(node2->data))->id];
 	}
+
 	return parent[((tree_data *)(node1->data))->id];
 }
 
@@ -415,6 +436,7 @@ static
 g_tree_node *least_comm_ancestor(g_tree *tree, g_tree_node *node1,
 								 g_tree_node *node2)
 {
+	/* Tratez cazuri speciale in cazul in care nu pot face algoritmul de LSA */
 	if (!tree) {
 		printf("Create a tree first\n");
 		return NULL;
@@ -438,6 +460,7 @@ g_tree_node *least_comm_ancestor(g_tree *tree, g_tree_node *node1,
 	if (tree->root == node1 || tree->root == node2)
 		return tree->root;
 
+	/* Creez vectorul de parinti, distanta si daca un nod este vizitat */
 	g_tree_node **parent = malloc(MAX_PEOPLE * sizeof(g_tree_node *));
 	DIE(!parent, "Eroare la alocare\n");
 
@@ -480,11 +503,13 @@ void common_repost(g_tree **tree_vector) {
 
 	((tree_data *)(find_node2.data))->parrent_id = repost_id2;
 
+	/* Caut in arbore cele doua noduri si iau pointerii de la ei */
 	g_tree_node *node1 = get_node(tree->root, &find_node1, tree->compare);
 	g_tree_node *node2 = get_node(tree->root, &find_node2, tree->compare);
 
 	g_tree_node *ancestor = least_comm_ancestor(tree, node1, node2);
 
+	/* Afisez primul repost comun care este cel mai mic stramos comun */
 	if (!ancestor) {
 		printf("No common repost found\n");
 	} else {
