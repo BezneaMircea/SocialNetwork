@@ -89,11 +89,90 @@ void friends_repost(g_tree **tree_vector, list_graph_t *graph) {
 	}
 }
 
+typedef struct {
+	int nr_connect;
+	unsigned int id;
+} id_connections;
+
+typedef struct {
+	int size;
+	id_connections *data;
+} group_vector;
+
+static void swap_group_data(id_connections *a, id_connections *b) {
+	id_connections aux = *a;
+	*a = *b;
+	*b = aux;
+}
+
 /** @brief Functia face parsarea si executa functionalitatea "Clica"
  *  @param graph: Graful de prieteni
  */
 void clique(list_graph_t *graph) {
-	(void)graph;
-	// TODO:
+	char *name = strtok(NULL, "\n ");
+	unsigned int user_id = get_user_id(name);
+
+	int nr_friends = graph->neighbors[user_id]->size;
+
+	group_vector *group = malloc(sizeof(group_vector));
+	group->data = calloc(nr_friends + 1, sizeof(id_connections));
+
+	group->size = nr_friends + 1;
+	/* Vector de frecventa in care, daca elementul de pe pozitia i este
+	 * 1, inseamna ca userul care are ID-ul = i este vecinul lui user
+	 * il punem si pe user setat pe 1 ca si el face parte din grup */
+
+	int k = 0;
+	for (unsigned int i = 0; i < MAX_PEOPLE; i++) {
+		if (lg_has_edge(graph, user_id, i) == 1 || i == user_id) {
+			group->data[k].id = i;
+
+			/* Numarul de conexiuni */
+			group->data[k].nr_connect = 0;
+			k++;
+		}
+	}
+
+	for (int i = 0; i < nr_friends + 1; i++) {
+		/* Iteram prin toti vecinii lui user */
+		for (int j = 0; j < nr_friends + 1; j++) {
+			if (lg_has_edge(graph, group->data[i].id, group->data[j].id) == 1 &&
+				i != j) {
+				group->data[i].nr_connect++;
+			}
+		}
+	}
+
+	/* Sortam vectorul de conexiuni descrescator ca sa pot scoate de la final */
+
+	for (int i = 0; i < nr_friends + 1; i++) {
+		for (int j = i + 1; j < nr_friends + 1; j++) {
+			if (group->data[i].nr_connect < group->data[j].nr_connect) {
+				swap_group_data(&group->data[i], &group->data[j]);
+			} else if (group->data[i].nr_connect == group->data[j].nr_connect &&
+					   group->data[i].id < group->data[j].id) {
+				swap_group_data(&group->data[i], &group->data[j]);
+			}
+		}
+	}
+
+	while (group->data[nr_friends].nr_connect != group->size - 1) {
+		nr_friends--;
+		group->size--;
+	}
+
+	/* Sortam vectorul de conexiuni crescator dupa ID */
+	for (int i = 0; i < nr_friends + 1; i++)
+		for (int j = 0; j < nr_friends + 1; j++)
+			if (group->data[i].id < group->data[j].id)
+				swap_group_data(&group->data[i], &group->data[j]);
+
+	/* Afisam rezultatul */
+	printf("The closest friend group of %s is:\n", name);
+	for (int i = 0; i < nr_friends + 1; i++)
+		printf("%s\n", get_user_name(group->data[i].id));
+
+	free(group->data);
+	free(group);
 }
 
