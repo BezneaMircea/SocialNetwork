@@ -10,8 +10,6 @@
 #include "friends.h"
 #include "users.h"
 
-
-
 /** @brief Aceasta este structura pe care o va retine fiecare nod din arbore
  *  @param id: Id-ul postarii
  *  @param user_id: Id-ul celui care a facut postarea/repostarea

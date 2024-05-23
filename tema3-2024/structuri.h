@@ -7,7 +7,7 @@
 #define STRUCTURI_H
 
 /// Implementari pentru: Coada, Stiva, Graf NEORIENTAT cu liste,
-/// lista simplu inlantuita, lista dublu inlantuita circulara
+/// lista simplu inlantuita
 #include "utils.h"
 
 ///
@@ -34,33 +34,6 @@ ll_node_t *ll_remove_nth_node(linked_list_t *list, unsigned int n);
 unsigned int ll_get_size(linked_list_t *list);
 void ll_print_int(linked_list_t *list);
 void ll_free(linked_list_t **pp_list);
-
-///
-///
-/// Double linked list
-///
-///
-typedef struct dll_node dll_node;
-struct dll_node {
-	void *data;
-	dll_node *prev, *next;
-};
-
-typedef struct dll_list dll_list;
-struct dll_list {
-	dll_node *head;
-	int data_size;
-	int size;
-};
-
-void dll_free(dll_list **pp_list, void (*elem_free)(void *));
-void dll_print_string_list(dll_list *list);
-void dll_print_int_list(dll_list *list);
-void dll_add_nth_node(dll_list *list, int n, void *new_data);
-void remove_a_node(dll_node *node_to_remove, dll_list *list);
-dll_node *dll_remove_nth_node_from_end(dll_list *list);
-dll_node *dll_remove_nth_node(dll_list *list, int n);
-dll_list *dll_create(int data_size);
 
 ///
 ///

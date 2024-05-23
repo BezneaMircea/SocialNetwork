@@ -85,7 +85,7 @@ g_tree_node *get_node(g_tree_node *node, g_tree_node *node_to_get,
 	/* Nu mai are copii deci intoarcem NULL */
 
 	if (compare(node, node_to_get) < 0) {
-		/* Datorita proprietatii arborelui nodurile mai mari decat nodul cautat 
+		/* Datorita proprietatii arborelui nodurile mai mari decat nodul cautat
 		 * nu ne intereseaza
 		 */
 		for (int i = 0; i < node->nr_children; i++)
@@ -95,7 +95,7 @@ g_tree_node *get_node(g_tree_node *node, g_tree_node *node_to_get,
 										  compare);
 				if (node_to_return)
 					return node_to_return;
-				/* Daca functia returneaza altceva decat NULL ne intoarcem 
+				/* Daca functia returneaza altceva decat NULL ne intoarcem
 				 * cu nodul gasit la portiunea din cod unde a fost apelata
 				 * functia */
 			}
@@ -132,7 +132,7 @@ void g_tree_insert(g_tree *tree, void *data) {
 		free(node_to_add->data);
 		free(node_to_add->children);
 		free(node_to_add);
-		/* Daca inserarea este imposibila 
+		/* Daca inserarea este imposibila
 		 * (nu se respecta proprietatea arborelui)*/
 		return;
 	}
@@ -174,7 +174,7 @@ void remove_kid(g_tree_node *node, int i) {
 	/* Mutam copilul la final */
 	node->nr_children--;
 	node->children[node->nr_children] = NULL;
-	/* Acum in vector pozitia acestuia pointeaza spre NULL 
+	/* Acum in vector pozitia acestuia pointeaza spre NULL
 	 * pentru a nu avea probleme de tip invalid read/write
 	 * ulterior */
 }
