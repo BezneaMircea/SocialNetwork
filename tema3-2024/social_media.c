@@ -44,11 +44,15 @@ int main(void)
 	char *input = (char *)malloc(MAX_COMMAND_LEN);
 
 	list_graph_t *graph = lg_create(MAX_PEOPLE);
+
 	g_tree **tree_vector = malloc(MAX_POSTS_NR * sizeof(g_tree *));
 	DIE(!tree_vector, "Eroare la alocare\n");
+	/* Ne cream un vector de pointeri catre copaci */
 
 	for (int i = 0; i < MAX_POSTS_NR; i++)
 		tree_vector[i] = NULL;
+	/* Setam pointerii sa pointeze spre NULL
+	 * Astfel vom stii daca un copacul a fost initializat sau nu */
 
 	while (1) {
 		char *command = fgets(input, MAX_COMMAND_LEN, stdin);
@@ -70,6 +74,8 @@ int main(void)
 		#endif
 	}
 
+	/* Eliberam toata memoria ocupata de structurile alocate
+	 * anterior */
 	purge_graph(&graph);
 	free_users();
 	free(input);
