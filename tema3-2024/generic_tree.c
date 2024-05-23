@@ -40,7 +40,8 @@ g_tree_create_node(void *data, unsigned int max_children_nr,
  *					  daca se trimite NULL nu are niciun efect
  *  @return Returneaza arborele generic
  */
-g_tree *g_tree_create(unsigned int data_size, int (*compare)(void *, void *),
+g_tree *g_tree_create(unsigned int data_size,
+					  int (*compare)(g_tree_node *, g_tree_node *),
 					  unsigned int max_children_nr, void (*free_data)(void *))
 {
 	g_tree *tree = malloc(sizeof(g_tree));
@@ -72,7 +73,7 @@ g_tree *g_tree_create(unsigned int data_size, int (*compare)(void *, void *),
  *  @return Returneaza nodul corespunzator, conform functiei compare
  */
 g_tree_node *get_node(g_tree_node *node, g_tree_node *node_to_get,
-					  int (*compare)(void *, void *))
+					  int (*compare)(g_tree_node *, g_tree_node *))
 {
 	g_tree_node *node_to_return;
 
@@ -189,7 +190,7 @@ void remove_kid(g_tree_node *node, int i) {
  */
 static
 g_tree_node *destroy_edge(g_tree_node *node, g_tree_node *node_to_remove,
-						  int (*compare)(void *, void *))
+						  int (*compare)(g_tree_node *, g_tree_node *))
 {
 	g_tree_node *node_to_return;
 	int cmp_res;

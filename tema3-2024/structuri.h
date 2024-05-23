@@ -144,17 +144,18 @@ struct g_tree
 	g_tree_node *root;
 	unsigned int data_size;
 	unsigned int max_children_nr;
-	int (*compare)(void *a, void *b);
+	int (*compare)(g_tree_node *a, g_tree_node *b);
 	void (*free_data)(void *a);
 };
 
-g_tree *g_tree_create(unsigned int data_size, int (*compare)(void *, void *),
+g_tree *g_tree_create(unsigned int data_size,
+					  int (*compare)(g_tree_node *, g_tree_node *),
 					  unsigned int max_children_nr, void (*free_data)(void *));
 void g_tree_insert(g_tree *tree, void *data);
 g_tree_node *remove_g_subtree(g_tree *tree, g_tree_node *node_to_remove);
 void purge_g_tree(g_tree **tree);
 void clear_tree(g_tree_node *node, void (*free_data)(void *));
 g_tree_node *get_node(g_tree_node *node, g_tree_node *node_to_add,
-					  int (*compare)(void *, void *));
+					  int (*compare)(g_tree_node *, g_tree_node *));
 
 #endif
