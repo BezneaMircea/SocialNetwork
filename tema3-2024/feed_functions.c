@@ -47,11 +47,20 @@ void view_profile(g_tree **tree_vector) {
 			continue;
 		/* Daca postarea nu a fost facuta mergem mai departe */
 
-		if (((tree_data *)cur_tree->root->data)->user_id == user_id) {
+		unsigned int post_id = ((tree_data *)cur_tree->root->data)->user_id;
+		if (post_id == user_id) {
 			/* Daca postarea a fost facuta de utilizatorul din input */
 			printf("Posted: %s\n",
 				   ((tree_data *)cur_tree->root->data)->post_name);
 		}
+	}
+
+	for (int i = 0; i < MAX_POSTS_NR; i++) {
+		/* Iteram in ordine prin vectorul de postari */
+		g_tree *cur_tree = tree_vector[i];
+		if (!cur_tree)
+			continue;
+		/* Daca postarea nu a fost facuta mergem mai departe */
 
 		for (int i = 0; i < cur_tree->root->nr_children; i++) {
 			unsigned int cur_id;
@@ -89,62 +98,75 @@ void friends_repost(g_tree **tree_vector, list_graph_t *graph) {
 	}
 }
 
+/* Structura pe care o va avea un element din vectorul de common-group */
 typedef struct {
+	/* Numarul de legaturi cu ceilalti useri din vectorul de common-group */
 	int nr_connect;
+	/* ID-ul userului*/
 	unsigned int id;
 } id_connections;
 
+/* Structura pe care o va avea vectorul de common-group */
 typedef struct {
+	/* Dimensiunea vectorului */
 	int size;
+	/* Vectorul in sine */
 	id_connections *data;
 } group_vector;
 
+/** @brief Functie de swap pentru doua elemente de tip id_connections
+ *  din vectorul de common-group
+ *  @param a: Primul element
+ *  @param b: Al doilea element
+ */
 static void swap_group_data(id_connections *a, id_connections *b) {
 	id_connections aux = *a;
 	*a = *b;
 	*b = aux;
 }
 
-/** @brief Functia face parsarea si executa functionalitatea "Clica"
+/** @brief Functia face parsarea si imi afiseaza cel mai mare grup de prieteni
+ *  care îl conține pe un anumit user
  *  @param graph: Graful de prieteni
  */
 void clique(list_graph_t *graph) {
 	char *name = strtok(NULL, "\n ");
 	unsigned int user_id = get_user_id(name);
 
+	/* Numarul de prieteni ai userului primit de la input */
 	int nr_friends = graph->neighbors[user_id]->size;
 
+	/* Vectorul de common-group */
+	/* Alocam memorie pentru nr_friends + 1 elemente deoarece adaugam in vector
+	 * si userul in sine, pe langa prietenii lui */
 	group_vector *group = malloc(sizeof(group_vector));
 	group->data = calloc(nr_friends + 1, sizeof(id_connections));
 
 	group->size = nr_friends + 1;
-	/* Vector de frecventa in care, daca elementul de pe pozitia i este
-	 * 1, inseamna ca userul care are ID-ul = i este vecinul lui user
-	 * il punem si pe user setat pe 1 ca si el face parte din grup */
 
+	/* Adaugam in vector userul in sine si prietenii lui*/
 	int k = 0;
 	for (unsigned int i = 0; i < MAX_PEOPLE; i++) {
 		if (lg_has_edge(graph, user_id, i) == 1 || i == user_id) {
+			/* Tinem minte si ID-urile pentru afisare la final, si pentru a
+			 * sorta userii dupa ID asa cum ni se cere */
 			group->data[k].id = i;
 
-			/* Numarul de conexiuni */
+			/* Initializam numarul de conexiuni */
 			group->data[k].nr_connect = 0;
 			k++;
 		}
 	}
 
-	for (int i = 0; i < nr_friends + 1; i++) {
-		/* Iteram prin toti vecinii lui user */
-		for (int j = 0; j < nr_friends + 1; j++) {
-			if (lg_has_edge(graph, group->data[i].id, group->data[j].id) == 1 &&
-				i != j) {
+	/* Iteram prin toate elementele din vector si adaugam conexiunile */
+	for (int i = 0; i < nr_friends + 1; i++)
+		for (int j = 0; j < nr_friends + 1; j++)
+			if (lg_has_edge(graph, group->data[i].id, group->data[j].id) == 1)
 				group->data[i].nr_connect++;
-			}
-		}
-	}
 
-	/* Sortam vectorul de conexiuni descrescator ca sa pot scoate de la final */
-
+	/* Sortam vectorul descrescator ca sa pot scoate de la final.
+	 * La final vor fi userii cu cele mai putine conexiuni asa ca aceia stim ca
+	 * nu fac parte din common-group. */
 	for (int i = 0; i < nr_friends + 1; i++) {
 		for (int j = i + 1; j < nr_friends + 1; j++) {
 			if (group->data[i].nr_connect < group->data[j].nr_connect) {
@@ -156,12 +178,20 @@ void clique(list_graph_t *graph) {
 		}
 	}
 
+	/* Regula prin care stim cand ne vom opri din a scoate elemente din vector
+	 * este ca la fiecare pas, daca numarul de conexiuni ale elementului pe care
+	 * vrem sa-l scoatem este diferit de numarul de noduri ramase - 1 inseamna
+	 * ca acel grup nu satisface conditia de graf complet, conditie necesara
+	 * pentru common-group.
+	 * Ne putem opri atunci deoarece noi vrem cel mai mare grup si pentru ca,
+	 * fiind sortate elementele dupa numarul de conexiuni, restul sigur satisfac
+	 * conditia */
 	while (group->data[nr_friends].nr_connect != group->size - 1) {
 		nr_friends--;
 		group->size--;
 	}
 
-	/* Sortam vectorul de conexiuni crescator dupa ID */
+	/* Sortam vectorul ramas crescator dupa ID */
 	for (int i = 0; i < nr_friends + 1; i++)
 		for (int j = 0; j < nr_friends + 1; j++)
 			if (group->data[i].id < group->data[j].id)
