@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2024, <> Beznea Mircea <bezneamirceaandrei21@gmail.com>
+ *                        Ghenescu Stefan <stefan.ghenescu2005@gmail.com>
+ */
+
 #include "structuri.h"
 #include "posts.h"
 
@@ -50,11 +55,13 @@ g_tree *g_tree_create(unsigned int data_size, int (*compare)(void *, void *),
 	return tree;
 }
 
-/** @brief Funcita cauta recursiv nodul unde trebuie sa adauge copilul
- *		   node_to_add. ATENTIE! Functia compare nu este obligatoriu sa
+/** @brief Funcita cauta recursiv nodul unde ar trebui sa fie adaugat copilul
+ *		   node_to_get. ATENTIE! Functia compare nu este obligatoriu sa
  *		   fie comutativa. Asa ca pentru a spori genericitate, vom considera
  *		   mereu ca node_to_add, node_to_remove, node_to_print, etc. O sa fie
- *		   al doilea nod din functia compare.
+ *		   al doilea nod din functia compare. Cu alte cuvinte, primul este
+ *		   parintele. In aceasta functie parcurgerea se face evident de sus
+ *		   in jos
  *  @param node: Nodul curent
  *  @param node_to_get: Nodul ce contine in void *data o informatie adecavata
  *						astfel incat functia compare sa il poata recunoaste in
@@ -71,21 +78,31 @@ g_tree_node *get_node(g_tree_node *node, g_tree_node *node_to_get,
 
 	if (!compare(node, node_to_get))
 		return node;
+	/* La egalitate intoarcem nodul */
 
 	if (!node->nr_children)
 		return NULL;
+	/* Nu mai are copii deci intoarcem NULL */
 
 	if (compare(node, node_to_get) < 0) {
+		/* Datorita proprietatii arborelui nodurile mai mari decat nodul cautat 
+		 * nu ne intereseaza
+		 */
 		for (int i = 0; i < node->nr_children; i++)
 			if (compare(node->children[i], node_to_get) <= 0) {
+				/* Ne intereseaza doar copii mai mici sau egali */
 				node_to_return = get_node(node->children[i], node_to_get,
 										  compare);
 				if (node_to_return)
 					return node_to_return;
+				/* Daca functia returneaza altceva decat NULL ne intoarcem 
+				 * cu nodul gasit la portiunea din cod unde a fost apelata
+				 * functia */
 			}
 	}
 
 	return NULL;
+	/* Intoarcem NULL daca nu am gasit nodul cautat pe subarborele curent */
 }
 
 /** @brief Functia insereaza in arbore un nod ce contine informatia data.
@@ -106,6 +123,7 @@ void g_tree_insert(g_tree *tree, void *data) {
 	if (!tree->root) {
 		tree->root = node_to_add;
 		return;
+		/* Daca inseram la radacina */
 	}
 
 	if (tree->compare(tree->root, node_to_add) > 0) {
@@ -114,7 +132,8 @@ void g_tree_insert(g_tree *tree, void *data) {
 		free(node_to_add->data);
 		free(node_to_add->children);
 		free(node_to_add);
-
+		/* Daca inserarea este imposibila 
+		 * (nu se respecta proprietatea arborelui)*/
 		return;
 	}
 
@@ -122,11 +141,13 @@ void g_tree_insert(g_tree *tree, void *data) {
 										 tree->compare);
 	if (!where_to_add) {
 		printf("Reposting what?\n");
+		/* Daca nu am gasit unde trebuie sa adaugam */
 		return;
 	}
 
 	where_to_add->children[where_to_add->nr_children] = node_to_add;
 	where_to_add->nr_children++;
+	/* Adaugam nodul nou creat la finalul vectorului de copii */
 }
 
 /** @brief Interschimba doi pointeri intre ei
@@ -150,8 +171,12 @@ static
 void remove_kid(g_tree_node *node, int i) {
 	for (int j = i; j < node->nr_children - 1; j++)
 		swap_nodes(&node->children[j], &node->children[j + 1]);
+	/* Mutam copilul la final */
 	node->nr_children--;
 	node->children[node->nr_children] = NULL;
+	/* Acum in vector pozitia acestuia pointeaza spre NULL 
+	 * pentru a nu avea probleme de tip invalid read/write
+	 * ulterior */
 }
 
 /** @brief Functia distruce legatura dintre doua noduri parinte-copil din arbore
@@ -181,13 +206,15 @@ g_tree_node *destroy_edge(g_tree_node *node, g_tree_node *node_to_remove,
 			node_to_return = node->children[i];
 			remove_kid(node, i);
 			return node_to_return;
+			/* Daca l-am gasit il intoarcem si stricam legatura */
 		} else if (cmp_res == -1) {
-			/// daca copilul este mai mic decat data
+			/* Daca copilul este mai mic decat data */
 			node_to_return = destroy_edge(node->children[i], node_to_remove,
 										  compare);
 			if (node_to_return)
 				return node_to_return;
 		}
+		/* Cazul in care copilul este mai mare nu ne intereseaza */
 	}
 
 	return NULL;
@@ -195,12 +222,12 @@ g_tree_node *destroy_edge(g_tree_node *node, g_tree_node *node_to_remove,
 
 /** @brief Functia distruge legatura dintre parintele ce contine nodul
  *		   cu informatia data si acesta. Facand ca parintele sa pointeze
- *		   spre NULL
+ *		   spre NULL. Memoria este eliberata de callee
  *  @param tree: Arborele in care vrem sa distrugem legatura
  *  @param data_to_remove: Nodul pe care vrem sa il eliminam din arbore
  *  @return Functia intoarce nodul ce contine informatia data. Cel care
  *			a fost eliminat din arbore. Practic radacina subarborelui
- *			eliminat
+ *			eliminat.
  */
 g_tree_node *remove_g_subtree(g_tree *tree, g_tree_node *node_to_remove) {
 	if (!tree)
@@ -214,14 +241,14 @@ g_tree_node *remove_g_subtree(g_tree *tree, g_tree_node *node_to_remove) {
 	if (!tree->compare(tree->root, node_to_remove)) {
 		tree->root = NULL;
 		return node_to_return;
+		/* Cazul in care vrem sa eliminam chiar radacina arborelui */
 	}
-	/// Am tratat cazul in care vrem sa eliminam o postare
 
 	return destroy_edge(node_to_return, node_to_remove, tree->compare);
 }
 
 /** @brief Functia elibereaza memoria consumata de tot subarborele care pleaca
- *		   de la node;
+ *		   de la node, inclusiv node
  *  @param node: radacina subarborelui a carui memorie vrem sa o eliberam.
  *  @param free_data: Pointer spre o functie care elibereaza memoria din campul
  *					  data in cazul unei structuri complexe. NU memoria alocata
@@ -243,7 +270,8 @@ void clear_tree(g_tree_node *node, void (*free_data)(void *))
 }
 
 /** @brief Functia elibereaza toata memoria consumata (de nodurile arborelui,
- *		   cat si memoria consumata de arborele insusi).
+ *		   cat si memoria consumata de arbore insusi). Si face ca acesta sa
+ *		   pointeze spre NULL ulterior
  *  @param tree: adresa arborelui a carui memorie vrem sa o eliberam.
  */
 void purge_g_tree(g_tree **tree)

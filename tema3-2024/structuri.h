@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2024, <> Beznea Mircea <bezneamirceaandrei21@gmail.com>
+ *                        Ghenescu Stefan <stefan.ghenescu2005@gmail.com>
  */
 
 #ifndef STRUCTURI_H
@@ -152,7 +153,10 @@ struct g_tree_node
 	int nr_children;
 };
 
-/** @param root: Radacina copacului
+/** @brief Aceasta structura este un arbore generic, cu prorietatea orice
+ *         copil este mai mare decat parintele, iar copii unui nod sunt ordonati
+ *		   crescator de la stanga la dreapta.
+ *  @param root: Radacina copacului
  *  @param data_size: Dimensiunea datelor tinute intr-un nod
  *  @param max_children_nr: Nr maxim de copii ai unui nod
  *  @param compare: Pointer spre o functie de comparare intre noduri

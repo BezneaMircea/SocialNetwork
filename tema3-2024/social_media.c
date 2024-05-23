@@ -1,6 +1,11 @@
 /**
  * The entrypoint of the homework. Every initialization must be done here
-*/
+ *
+ *
+ * Copyright (c) 2024, <> Beznea Mircea <bezneamirceaandrei21@gmail.com>
+ *                        Ghenescu Stefan <stefan.ghenescu2005@gmail.com>
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -12,7 +17,7 @@
 
 /**
  * Initializez every task based on which task we are running
-*/
+ */
 void init_tasks(void)
 {
 	#ifdef TASK_1

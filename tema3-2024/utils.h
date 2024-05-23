@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2024, <>
+ * Copyright (c) 2024, <> Beznea Mircea <bezneamirceaandrei21@gmail.com>
+ *                        Ghenescu Stefan <stefan.ghenescu2005@gmail.com>
  */
 
 #ifndef UTILS_H
