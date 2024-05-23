@@ -125,6 +125,24 @@ static void swap_group_data(id_connections *a, id_connections *b) {
 	*b = aux;
 }
 
+/** @brief Functie de sortare a vectorului de common-group
+ *  Daca numarul de conexiuni este acelasi, sortam descrescator dupa ID
+ *  @param data: Vectorul de common-group
+ *  @param size: Dimensiunea vectorului
+ */
+static void sort_group_descrescator_nr_connect(id_connections *data, int size) {
+	for (int i = 0; i < size - 1; i++) {
+		for (int j = i + 1; j < size; j++) {
+			if (data[i].nr_connect < data[j].nr_connect) {
+				swap_group_data(&data[i], &data[j]);
+			} else if (data[i].nr_connect == data[j].nr_connect &&
+					   data[i].id < data[j].id) {
+				swap_group_data(&data[i], &data[j]);
+			}
+		}
+	}
+}
+
 /** @brief Functia face parsarea si imi afiseaza cel mai mare grup de prieteni
  *  care îl conține pe un anumit user
  *  @param graph: Graful de prieteni
@@ -167,16 +185,7 @@ void clique(list_graph_t *graph) {
 	/* Sortam vectorul descrescator ca sa pot scoate de la final.
 	 * La final vor fi userii cu cele mai putine conexiuni asa ca aceia stim ca
 	 * nu fac parte din common-group. */
-	for (int i = 0; i < nr_friends + 1; i++) {
-		for (int j = i + 1; j < nr_friends + 1; j++) {
-			if (group->data[i].nr_connect < group->data[j].nr_connect) {
-				swap_group_data(&group->data[i], &group->data[j]);
-			} else if (group->data[i].nr_connect == group->data[j].nr_connect &&
-					   group->data[i].id < group->data[j].id) {
-				swap_group_data(&group->data[i], &group->data[j]);
-			}
-		}
-	}
+	sort_group_descrescator_nr_connect(group->data, nr_friends + 1);
 
 	/* Regula prin care stim cand ne vom opri din a scoate elemente din vector
 	 * este ca la fiecare pas, daca numarul de conexiuni ale elementului pe care
@@ -187,7 +196,20 @@ void clique(list_graph_t *graph) {
 	 * fiind sortate elementele dupa numarul de conexiuni, restul sigur satisfac
 	 * conditia */
 	while (group->data[nr_friends].nr_connect != group->size - 1) {
+		/* Scoatem din vector userul cu cele mai putine conexiuni.
+		 * Scadem numarul conexiunilor userilor care erau conectati cu el
+		 * deoarece nodul scos nu face parte din common-group deci conexiunea
+		 * lui nu trebuie luata in calcul */
+		for (int i = 0; i < nr_friends; i++) {
+			int friend_id = group->data[i].id;
+			if (lg_has_edge(graph, group->data[nr_friends].id, friend_id) == 1)
+				group->data[i].nr_connect--;
+		}
 		nr_friends--;
+
+		/* Sortam din nou vectorul dupa numarul de conexiuni si ID */
+		sort_group_descrescator_nr_connect(group->data, nr_friends + 1);
+
 		group->size--;
 	}
 
