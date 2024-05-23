@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2024, <> Beznea Mircea <bezneamirceaandrei21@gmail.com>
+ *                        Ghenescu Stefan <stefan.ghenescu2005@gmail.com>
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
