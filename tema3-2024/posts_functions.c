@@ -21,11 +21,11 @@ void free_data(void *data) {
  *  @param data_b: Nodul copil
  *  @return 0 le egalitate 1 daca data_a > data_b si -1 daca data_a < data_b
  */
-int compare(void *data_a, void *data_b) {
+int compare(g_tree_node *data_a, g_tree_node *data_b) {
 	/* id-ul nodului */
-	int node_id = ((tree_data *)(((g_tree_node *)data_a)->data))->id;
+	int node_id = ((tree_data *)((data_a)->data))->id;
 	/* id-ul  parintelui */
-	int dad_id = ((tree_data *)(((g_tree_node *)data_b)->data))->parrent_id;
+	int dad_id = ((tree_data *)((data_b)->data))->parrent_id;
 
 	if (node_id > dad_id)
 		return 1;
