@@ -334,9 +334,12 @@ g_tree_node *get_that_ancestor(g_tree *tree, g_tree_node *node1,
 							   g_tree_node *node2, g_tree_node **parent,
 							   int *dist)
 {
+	/* Distantele reprezinta pe ce nivel se afla cele 2 noduri in arbore */
 	int dist1 = dist[((tree_data *)(node1->data))->id];
 	int dist2 = dist[((tree_data *)(node2->data))->id];
 
+	/* Vrem sa fim pe acelasi nivel si abdatam nodul care se afla pe un nivel
+	 *  mai jos cu tatal acestuia pana cand ajungem pe acelasi nivel */
 	if (dist1 > dist2) {
 		int d = dist1 - dist2;
 		while (d > 0) {
@@ -351,9 +354,13 @@ g_tree_node *get_that_ancestor(g_tree *tree, g_tree_node *node1,
 		}
 	}
 
+	/* Daca cele doua noduri acum sunt acelasi inseamna ca unul dintre ele
+	 * a fost initial stramosul celuilalt */
 	if (node1 == node2)
 		return node1;
 
+	/* Daca unul intre ele este radacina inseamna ca el este sigur cel mai mic
+	 * stramos comun */
 	if (tree->root == node1 || tree->root == node2)
 		return tree->root;
 

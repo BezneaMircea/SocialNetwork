@@ -21,7 +21,7 @@ void add_friend(list_graph_t *graph) {
 	int id_name1 = get_user_id(name1);
 	int id_name2 = get_user_id(name2);
 
-	// graf neorientat
+	/* Graf neorientat */
 	lg_add_edge(graph, id_name1, id_name2);
 
 	printf("Added connection %s - %s\n", name1, name2);
@@ -40,14 +40,14 @@ void remove_friend(list_graph_t *graph) {
 	int id_name1 = get_user_id(name1);
 	int id_name2 = get_user_id(name2);
 
-	// graf neorientat
+	/* Graf neorientat */
 	lg_remove_edge(graph, id_name1, id_name2);
 
 	printf("Removed connection %s - %s\n", name1, name2);
 }
 
 /**
- * @brief Functia afseaza toti prietenii prietenilor,
+ * @brief Functia afiseaza toti prietenii prietenilor,
  * care nu sunt deja prieteni cu user
  * @param graph: Graful
  * @param user: Numele utilizatorului
@@ -56,22 +56,36 @@ void suggestions_friend(list_graph_t *graph) {
 	char *user = strtok(NULL, "\n ");
 
 	int id = get_user_id(user);
+
+	/* Lista de prieteni a utilizatorului */
 	linked_list_t *user_friends = graph->neighbors[id];
 
+	/* Variabila ma va ajuta la afisare, deoarece difera mesajul
+	 * daca nu am sugestii */
 	int nr_suggestions = 0;
+
+	/* Vector de frecventa in care, daca elementul de pe pozitia i este
+	 * 1, inseamna ca userul care are ID-ul = i satisface conditiile pentru
+	 * suggestions */
 	int *suggestions = calloc(MAX_PEOPLE, sizeof(int));
 
 	ll_node_t *friend = user_friends->head;
 
+	/* Trec prin toti prietenii utilizatorului */
 	while (friend) {
 		int friend_id = *(int *)friend->data;
 
 		linked_list_t *list_friends_of_friend = graph->neighbors[friend_id];
 
 		ll_node_t *friend_of_friend = list_friends_of_friend->head;
+
+		/* Trec prin toti prietenii prietenului utilizatorului */
 		while (friend_of_friend) {
 			int friend_of_friend_id = *(int *)friend_of_friend->data;
 
+			/* Daca dau de un user care nu este prieten cu utilizatorul dat ca
+			 * input si nu este nici utilizatorul propriu-zis, atunci il setez
+			 * pe 1 in vectorul de frecventa pt a fi afisat la final */
 			if (friend_of_friend_id != id &&
 				!lg_has_edge(graph, id, friend_of_friend_id)) {
 				suggestions[friend_of_friend_id] = 1;
@@ -85,7 +99,7 @@ void suggestions_friend(list_graph_t *graph) {
 	}
 
 	if (nr_suggestions == 0) {
-		printf("There are no suggestions for %s:\n", user);
+		printf("There are no suggestions for %s\n", user);
 	} else {
 		printf("Suggestions for %s:\n", user);
 
@@ -109,13 +123,19 @@ void common_friends(list_graph_t *graph) {
 	int id_name1 = get_user_id(name1);
 	int id_name2 = get_user_id(name2);
 
+	/* Acest vector este un vector de frecventa. Atunci cand dau de un user
+	 * ca prieten ori de la name1 ori de la name2 ma duc pe pozitia ID in vector
+	 * si cresc elementul respectiv. Daca la final acest element este 2 inseamna
+	 * ca ambii useri au ca prieten acel utilizator */
 	int *common_friends = calloc(MAX_PEOPLE, sizeof(int));
 	int nr_common = 0;
 
+	/* Ma duc pe lista cu prietenii celui de-al doilea utilizator */
 	linked_list_t *list_user = graph->neighbors[id_name1];
-
 	ll_node_t *friend = list_user->head;
 
+	/* Parcurgerea prietenilor primului utilizator si abdatarea vectorului 
+	 * de prieteni comuni */
 	while (friend) {
 		int friend_id = *(int *)friend->data;
 		common_friends[friend_id]++;
@@ -124,9 +144,12 @@ void common_friends(list_graph_t *graph) {
 		friend = friend->next;
 	}
 
+	/* Ma duc pe lista cu prietenii celui de-al doilea utilizator */
 	list_user = graph->neighbors[id_name2];
 	friend = list_user->head;
 
+	/* Parcurgerea prietenilor celui de-al doilea utilizator si abdatarea
+	 * vectorului de prieteni comuni */
 	while (friend) {
 		int friend_id = *(int *)friend->data;
 		common_friends[friend_id]++;
@@ -158,9 +181,10 @@ void distance_friend(list_graph_t *graph) {
 
 	int id_name1 = get_user_id(name1);
 	int id_name2 = get_user_id(name2);
-
-	int *vizitat = calloc(graph->nodes, sizeof(int));
-	int *dist = calloc(graph->nodes, sizeof(int));
+	
+	/* BFS incepand din nodul primului utilizator */
+	int *vizitat = calloc(MAX_PEOPLE, sizeof(int));
+	int *dist = calloc(MAX_PEOPLE, sizeof(int));
 
 	for (int i = 0; i < graph->nodes; i++)
 		dist[i] = -1;
@@ -178,6 +202,7 @@ void distance_friend(list_graph_t *graph) {
 			int vecin = *(int *)current_node->data;
 			if (vizitat[vecin] == 0) {
 				vizitat[vecin] = 1;
+				/* Distanta pana la vecin */
 				dist[vecin] = dist[nodtop] + 1;
 				q_enqueue(queue, &vecin);
 			}
@@ -207,27 +232,27 @@ void most_popular(list_graph_t *graph) {
 	char *user = strtok(NULL, "\n ");
 	int id = get_user_id(user);
 
-	// numar de conexiuni ale utilizatorului
+	/* Numar de conexiuni ale utilizatorului */
 	int user_connections = graph->neighbors[id]->size;
 
-	// vom cauta maximul de conexiuni ale unui vecin
-	// la final comparam vecinul cu cele mai multe conexiuni cui user-ul
-	// si vedem cine este mai popular
+	/* Vom cauta maximul de conexiuni ale unui vecin
+	 *  la final comparam vecinul cu cele mai multe conexiuni cu user-ul
+	 *  si vedem cine este mai popular */
 	int popular_connections = 0;
 	int popular_friend_id = 0;
 
 	ll_node_t *friend = graph->neighbors[id]->head;
 	while (friend) {
 		int friend_id = *(int *)friend->data;
-		// cate conexiuni are vecinul lui user
+		/* Cate conexiuni are vecinul lui user */
 		int friend_connections = graph->neighbors[friend_id]->size;
 
 		if (popular_connections < friend_connections) {
 			popular_connections = friend_connections;
 			popular_friend_id = friend_id;
 		} else if (popular_connections == friend_connections) {
-			// In caz de egalitate pentru prieteni
-			// se va considera primul dupa id
+			/* In caz de egalitate pentru prieteni
+			 *  se va considera primul dupa id */
 			if (popular_friend_id > friend_id) {
 				popular_connections = friend_connections;
 				popular_friend_id = friend_id;
@@ -245,6 +270,10 @@ void most_popular(list_graph_t *graph) {
 	}
 }
 
+/**
+ * @brief Functia afiseaza numarul de prieteni ai unui utilizator
+ * @param graph: Graful
+ */
 void how_many_friends(list_graph_t *graph) {
 	char *name = strtok(NULL, "\n ");
 	int id = get_user_id(name);
