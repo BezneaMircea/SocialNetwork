@@ -31,8 +31,8 @@ void handle_input_feed(char *input, g_tree **tree_vector, list_graph_t *graph)
 		view_profile(tree_vector);
 	} else if (!strcmp(cmd, "friends-repost")) {
 		friends_repost(tree_vector, graph);
-	} else if (!strcmp(cmd, "common-groups")) {
-		clique(tree_vector, graph);
+	} else if (!strcmp(cmd, "common-group")) {
+		clique(graph);
 	} else if (!strcmp(cmd, "create")) {
 		int id = id_increase();
 		create_post(&tree_vector[id], id);

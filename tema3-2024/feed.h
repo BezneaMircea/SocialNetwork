@@ -15,6 +15,6 @@ void view_profile(g_tree **tree_vector);
 
 void friends_repost(g_tree **tree_vector, list_graph_t *graph);
 
-void clique(g_tree **tree_vector, list_graph_t *graph);
+void clique(list_graph_t *graph);
 
 #endif // FEED_H

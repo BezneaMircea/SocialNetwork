@@ -61,9 +61,18 @@ void friends_repost(g_tree **tree_vector, list_graph_t *graph) {
 	}
 }
 
-void clique(g_tree **tree_vector, list_graph_t *graph) {
-	(void)graph;
-	(void)tree_vector;
-	// TODO:
+typedef struct {
+	int size;
+	int *data;
+} vect;
+
+static
+vect *bron_kerbosch(list_graph_t *graph, vect *R, vect *P, vect *X) {
+	
+}
+
+void clique(list_graph_t *graph) {
+	char *name = strtok(NULL, "\n ");
+	
 }
 
