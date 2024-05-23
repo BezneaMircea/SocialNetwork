@@ -135,7 +135,9 @@ struct g_tree_node
  *  @param compare: Pointer spre o functie de comparare intre noduri
  *                  intoarce 0 la egalitate. 1 daca primul nod e mai mare
  *                  -1 daca al doilea e mai mare. NU E NEAP CA FUNCTIA SA
- *                  fie comutativa.
+ *                  fie comutativa. Pentru genericitate, in cazul in care
+ *					functia e necomutativa vom considera ca prim nod in functia
+ *					de comparare parintele.
  *  @param free_data Pointer spre o functie de elibarare a datelor dintr-un nod
  */
 typedef struct g_tree g_tree;
