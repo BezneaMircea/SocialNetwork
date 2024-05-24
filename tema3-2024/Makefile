@@ -1,5 +1,5 @@
-CC=gcc -g
-CFLAGS=-Wall -Wextra
+CC=gcc
+CFLAGS=-Wall -Wextra -Werror -g
 
 FRIENDS=friends
 FRIENDS_F=friends_functions
