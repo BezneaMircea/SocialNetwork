@@ -1,12 +1,5 @@
-#Tema 3 SDA. - Echipa:
 -> Beznea Mircea-Andrei, ID: mircea.beznea
 -> Ghenescu Stefan, ID: stefan.ghenescu
-
--------------------------------------------------------------------------------
-#Copy-Right(c):
-
-Coada si lista simplu inlantuita sunt structuri implementate de echipa SDA.
-Restul sunt ale noastre.
 
 -------------------------------------------------------------------------------
 
@@ -19,7 +12,7 @@ social_media.c -> Task2: posts.h -> posts.c -> posts_functions.c
 Aceasta este o schema foarte simplista a flowlui din cod.
 
 Avem un fisier structuri.h in care se vor regasi toate structurile de date
-folosite de noi in rezolvarea temei. O lista simplu inlantuita, o coada,
+folosite de noi in rezolvare. O lista simplu inlantuita, o coada,
 o stiva, si un graf implementat cu liste de vecini.
 
 In fisierul generic_tree.c se va regasi codul sursa ce implementeaza cateva
@@ -27,7 +20,7 @@ dintre functionalitatile unui arbore generic, dar cu cateva proprietati
 importante. In primul rand orice copil este mai mare decat parintele
 si copii unui nod sunt asezati in ordine crescatoare.
 
-Deoarce in rezolvarea temei relatia de ordine dintre noduri nu depinde exclusiv
+Deoarce in rezolvare relatia de ordine dintre noduri nu depinde exclusiv
 de valorea acestora, ci si de valoarea parintilor este necesar ca functia de
 comparare sa fie necomutativa. Asa ca pentru a incerca sa pastram cat mai mult
 genericitatea vom considera mereu nodul mai apropiat de radacina ca fiind primul
@@ -40,31 +33,17 @@ intrucat functia de comparare desi primeste ca parametrii noduri, evident
 acceseaza campul void *data din acestea. In cod se regasesc mai multe
 explicatii referitoare la fiecare functionalitate in parte.
 -------------------------------------------------------------------------------
-# Comentarii asupra temei?
 
-1. Credeti ca ati fi putut realiza o implementare mai buna a temei?
+Testing
 
-Noi mergem pe premisa ca intotdeauna se poate mai bine, dar cu toate acestea
-suntem mandri de implementarea facuta. Consideram ca avem un cod curat, bine
-documentat, bine modularizat si usor de citit avand in vedere complexitatea
-anumitor logici de implementare necesare pentru a reusi sa construim o
-structura generica pentru o problema destul de particulara.
 
-2. Ce ati invatat din realizarea temei?
+Pentru testare se poate rula din linux CLI in folderul src comanda make
 
-Pe langa acumularea de experienta in a scrie cod, ne-am familiarizat cu
-lucratul in echipa si cu mediul github ceea ce a fost destul de challengeing.
+iar apoi pentru fiecare task in parte
 
-Este prima data cand lucram la un proiect de codying impreuna si suntem destul
-de mandri de rezultatul obtinut, amandoi ajungand la concluzia ca daca scriam
-singuri tot codul nu am fi reusit o implementare atat de buna. 
+./(exec_name) < ../input/(file_name)
 
-3. Comentarii personale?
 
-A fost o tema destul de interesanta, foarte misto a fost faptul ca a fost in
-echipa. Ca feedback pentru echipa SDA putem sa spunem doar ca a fost o abordare
-foarte interesanta asupra ultimei teme si recomandam folosirea acestui tip
-de abordari si in cadrul cursului de anul viitor.
 
 Multumim!
 
