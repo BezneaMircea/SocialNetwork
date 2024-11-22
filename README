@@ -1,0 +1,49 @@
+-> Beznea Mircea-Andrei, ID: mircea.beznea
+-> Ghenescu Stefan, ID: stefan.ghenescu
+
+-------------------------------------------------------------------------------
+
+Am impartit fiecare Task in 3 fisiere sursa/biblioteca:
+
+	       -> Task1: friends.h -> friends.c -> friends_functions.c
+social_media.c -> Task2: posts.h -> posts.c -> posts_functions.c
+	       -> Task3: feed.h -> feed.c -> feed_functions.c
+
+Aceasta este o schema foarte simplista a flowlui din cod.
+
+Avem un fisier structuri.h in care se vor regasi toate structurile de date
+folosite de noi in rezolvare. O lista simplu inlantuita, o coada,
+o stiva, si un graf implementat cu liste de vecini.
+
+In fisierul generic_tree.c se va regasi codul sursa ce implementeaza cateva
+dintre functionalitatile unui arbore generic, dar cu cateva proprietati
+importante. In primul rand orice copil este mai mare decat parintele
+si copii unui nod sunt asezati in ordine crescatoare.
+
+Deoarce in rezolvare relatia de ordine dintre noduri nu depinde exclusiv
+de valorea acestora, ci si de valoarea parintilor este necesar ca functia de
+comparare sa fie necomutativa. Asa ca pentru a incerca sa pastram cat mai mult
+genericitatea vom considera mereu nodul mai apropiat de radacina ca fiind primul
+parametru dat in functia de comparare. Evident acest lucru este necesar doar in
+cazul in care avem de a face cu o functie de comparare necomutativa, asa cum
+este necesar in tema. Pe aceasta cale, am considerat ca functia de comparare a
+acestei structuri sa primeasca direct nodurile, facand astfel flowul de
+urmarire ceva mai usor. Acest lucru in schimb nu afecteaza genericitatea
+intrucat functia de comparare desi primeste ca parametrii noduri, evident
+acceseaza campul void *data din acestea. In cod se regasesc mai multe
+explicatii referitoare la fiecare functionalitate in parte.
+-------------------------------------------------------------------------------
+
+Testing
+
+
+Pentru testare se poate rula din linux CLI in folderul src comanda make
+
+iar apoi pentru fiecare task in parte
+
+./(exec_name) < ../input/(file_name)
+
+
+
+Multumim!
+
